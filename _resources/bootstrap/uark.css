@@ -1,7 +1,13 @@
+html {
+  background-color: #424242;
+  height: 100%;
+}
+
 body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #5a5a5a;
   font-size: 16px;
+  background-color: white;
 }
 
 #header-bg {
@@ -10,7 +16,6 @@ body {
 	top:-53px;
 	left:0;
 	width: 100%;
-	z-index: -10;
 	height:200px;
 }
 
@@ -70,4 +75,83 @@ body {
 .navbar-default .navbar-nav>li>a:hover {
   color: #aa0000;
   margin-top: -5px;
+}
+
+section.gray {
+	position:relative;
+	overflow:hidden;
+	background-color: #f2f2f4;
+	padding-top:30px;
+	padding-bottom:20px;
+	margin-top:15px;
+	margin-bottom: 0;
+}
+section.gray > .container > .row:first-child:before, section.gray > .container > .row:first-child:after,
+section.gray:before, section.gray:after
+{
+	pointer-events: none;
+	position: absolute;
+	content: "";
+	left: 2px;
+	height: 10px;
+	width: 100%;
+	top: -23px;
+	background: #a1a1a1;
+	-webkit-box-shadow: 0 8px 11px #a1a1a1;
+	-moz-box-shadow: 0 8px 11px #a1a1a1;
+	box-shadow: 0 8px 11px #a1a1a1;
+	-webkit-transform: rotate(-.8deg);
+	-moz-transform: rotate(-.8deg);
+	-o-transform: rotate(-.8deg);
+	-ms-transform: rotate(-.8deg);
+	transform: rotate(-.8deg);
+}
+section.gray > .container > .row:first-child:after, section.gray:before
+{
+	-webkit-transform: rotate(.8deg);
+	-moz-transform: rotate(.8deg);
+	-o-transform: rotate(.8deg);
+	-ms-transform: rotate(.8deg);
+	transform: rotate(.8deg);
+	right: 2px;
+}
+section.gray:before, section.gray:after
+{
+	left: 4px;
+	top: auto;
+	bottom: -21px;
+	background: #A7A7A7;
+	-webkit-box-shadow: 0 -5px 11px #a1a1a1;
+	-moz-box-shadow: 0 -5px 11px #a1a1a1;
+	box-shadow: 0 -5px 11px #a1a1a1;
+}
+section.gray:after
+{
+	right: 4px;
+	left: auto;
+}
+
+footer {
+  background-color: #424242;
+  color: #fff;
+  font-weight: 300;
+  display: block;
+  flex-grow: 1;
+  min-height: 100%
+}
+
+footer a, footer a:hover {
+  color: white;
+}
+
+#footer-global-links {
+  text-transform: uppercase;
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+}
+
+#footer-global-links li {
+  float: left;
+  margin-right: 2em;
 }
