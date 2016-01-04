@@ -1,0 +1,73 @@
+body {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #5a5a5a;
+  font-size: 16px;
+}
+
+#header-bg {
+	background-color: #f7f7f7;
+	position: absolute;
+	top:-53px;
+	left:0;
+	width: 100%;
+	z-index: -10;
+	height:200px;
+}
+
+@media (min-width:768px){
+  #opener .brand {
+      background: url("/_resources/images/logo-on-red.png") no-repeat 0 0;
+      display: block;
+      width: 195px;
+      height: 192px;
+      position: absolute;
+      top: 0px;
+      box-shadow: 0 0 10px rgba(0,0,0,.8);
+      padding: 0;
+      margin-left: -11px;
+      text-indent: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      z-index: 20;
+  }
+  
+  .navigation-menu {
+    margin-left: 200px;
+  }
+  
+  .navbar li {
+    width: 100px;
+    text-align: center;
+  }
+  
+  .navbar-default .navbar-nav>li>a:hover {
+    border-color: #af0001;
+  }
+}
+
+.navbar {
+    z-index: 9;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0px 7px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0px 7px rgba(0,0,0,.3);
+    box-shadow: 0 0px 7px rgba(0,0,0,.3);
+    border-radius: 0;
+    min-height: 57px;
+    max-height: 57px;
+    margin-bottom: 0;
+    margin-top: 40px;
+}
+
+#navbar {
+  border-color: transparent;
+}
+
+.navbar li:hover, .navbar a {
+  background-color: #fff;
+  border-top: 5px solid #fff;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+  color: #aa0000;
+  margin-top: -5px;
+}

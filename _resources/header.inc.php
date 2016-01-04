@@ -28,8 +28,9 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
   
   <?php echo "
   
-    <!-- favicon -->
+    <!-- favicon 
     <link rel='icon' href='$path_web_root/_resources/images/favicon.ico'></link>
+    -->
   
     <!-- JQUERY -->
     <script src='$path_web_root/_resources/jquery/jquery.1.11.2.min.js'></script>
@@ -45,12 +46,20 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
       <script src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js'></script>
     <![endif]-->
     
+    <!-- UARK -->
+    <link rel='stylesheet' href='$path_web_root/_resources/bootstrap/uark.css'></link>
+    
   ";?>
 
 </head>
 <body>
+<div id="header-bg"></div>
+<div class="container" id="opener" role="banner">
+  <a class="brand" href="http://www.uark.edu/">University of Arkansas</a>
+  <h1 id="site-heading"><!-- college header/name/info goes here --></h1>
+</div><!-- /#opener banner -->
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default">
 
       <div class="container">
 
@@ -64,7 +73,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
             <span class="icon-bar"></span>
           </button>
 
-	  <!-- Side Nav Toggle -->
+	  <!-- Side Nav Toggle
           <a id="sidenav-toggle" href="javascript:void(0);" onclick="$('#wrapper').toggleClass('toggled')">
 	    <img src="<?php echo $path_web_root;?>/_resources/images/favicon.ico"></img>
           </a>
@@ -76,6 +85,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
           <?php // #section_title_brand
 	    if(isset($section_title)) echo "<a id='section_title_brand' class='navbar-brand' href='./'>$section_title</a>";
           ?>
+           -->
 
         </div><!-- /.navbar-header -->
 
@@ -104,6 +114,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 	    </ul>
 	    
+	    <!--
 	    <div id='login_nav_div' class="pull-right-md pull-left-xs">
 		<ul class="nav navbar-nav navigation-menu">
 		  <?php
@@ -117,6 +128,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	      
 		</ul>
 	   </div>
+	   -->
 
 	</div><!--/#navbar.nav-collapse -->
 
@@ -127,14 +139,13 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 	<div id="wrapper">
 
-        <!-- Sidebar -->
+        <!-- Sidebar 
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav navigation-menu">
                 <!-- removed redundant sidebar brand
 		  <li class="sidebar-brand">
 		      <a href="<?php echo $path_web_root;?>/"><?php echo $site_title; ?></a>
 		  </li>
-                -->
                 <?php include($path_real_root . '/_resources/navigation-menu.php'); ?>
             </ul>
             <script>
