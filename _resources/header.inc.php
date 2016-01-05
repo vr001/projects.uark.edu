@@ -28,9 +28,8 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
   
   <?php echo "
   
-    <!-- favicon 
-    <link rel='icon' href='$path_web_root/_resources/images/favicon.ico'></link>
-    -->
+    <!-- favicon -->
+    <link rel='icon' href='$path_web_root/favicon.ico'></link>
   
     <!-- JQUERY -->
     <script src='$path_web_root/_resources/jquery/jquery.1.11.2.min.js'></script>
@@ -56,7 +55,8 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 <div id="header-bg"></div>
 <div class="container" id="opener" role="banner">
   <a class="brand" href="http://www.uark.edu/">University of Arkansas</a>
-  <h1 id="site-heading"><!-- college header/name/info goes here --></h1>
+  <h1 id="site-heading" style="position: absolute; top: 27px; margin-left: 220px;"><span class="walton-name"><a href="<?php echo $path_web_root;?>" style='color: #505050; font-weight: 700; font-size: 40px;'><?php echo $site_title;?></a></span></h1>
+  <p id="site-heading" style="position: absolute; top: 85px; margin-left: 220px; font-size: 20px;"><span class="walton-sub-name"><a href="//walton.uark.edu" style='color: #b3b3b3'>The Sam M. Walton College of Business</a></span></p>
 </div><!-- /#opener banner -->
 
     <nav class="navbar navbar-default">
@@ -77,15 +77,11 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
           <a id="sidenav-toggle" href="javascript:void(0);" onclick="$('#wrapper').toggleClass('toggled')">
 	    <img src="<?php echo $path_web_root;?>/_resources/images/favicon.ico"></img>
           </a>
+          -->
 
           <?php // #site_title_brand
 	    echo "<a id='site_title_brand' class='navbar-brand' href='$path_web_root/'>$site_title</a>"; 
           ?>
-
-          <?php // #section_title_brand
-	    if(isset($section_title)) echo "<a id='section_title_brand' class='navbar-brand' href='./'>$section_title</a>";
-          ?>
-           -->
 
         </div><!-- /.navbar-header -->
 

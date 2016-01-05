@@ -10,18 +10,43 @@ body {
   background-color: white;
 }
 
-#header-bg {
+
+
+@media (max-width:767px){
+  body {
+    padding-top: 0px;
+  }
+  .navbar {
+    margin-top: 0px;
+  }
+  #opener {
+    display: none;
+  }
+  #site_title_brand {
+	  content: "";
+	  background: url("../images/WaltonLogo2.png") left center no-repeat;
+	  background-size: contain;
+	  position: absolute;
+	  top:0;
+	  height:100%;
+	  width: 200px;
+	  display: block;
+	  font-size: 0;
+	  margin-left: 5px;
+  }
+}
+
+@media (min-width:768px){
+  #header-bg {
 	background-color: #f7f7f7;
 	position: absolute;
 	top:-53px;
 	left:0;
 	width: 100%;
 	height:200px;
-}
-
-@media (min-width:768px){
+  }
   #opener .brand {
-      background: url("/_resources/images/logo-on-red.png") no-repeat 0 0;
+      background: url("../images/logo-on-red.png") no-repeat 0 0;
       display: block;
       width: 195px;
       height: 192px;
@@ -37,7 +62,7 @@ body {
   }
   
   .navigation-menu {
-    margin-left: 200px;
+    margin-left: 120px;
   }
   
   .navbar li {
@@ -47,6 +72,9 @@ body {
   
   .navbar-default .navbar-nav>li>a:hover {
     border-color: #af0001;
+  }
+  .navbar {
+      margin-top: 80px;
   }
 }
 
@@ -60,7 +88,6 @@ body {
     min-height: 57px;
     max-height: 57px;
     margin-bottom: 0;
-    margin-top: 40px;
 }
 
 #navbar {

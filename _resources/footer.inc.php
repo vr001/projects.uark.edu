@@ -22,7 +22,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 </div>
                <div class="col-sm-5">
                   <div class="row">
-                     <div class="col-md-8"><a href="http://walton.uark.edu"><img alt="Sam M. Walton College of Business at the University of Arkansas" src="<?php echo $path_web_root; ?>/_resources/images/WaltonLogo2.png" class="img-responsive"></a></div>
+                     <div class="col-md-8 hidden-xs visible-sm visible-md visible-lg"><a href="http://walton.uark.edu"><img alt="Sam M. Walton College of Business at the University of Arkansas" src="<?php echo $path_web_root; ?>/_resources/images/WaltonLogo2.png" class="img-responsive"></a></div>
                      <div class="col-md-4 hidden-xs hidden-sm visible-md visible-lg"><a href="http://accredited.aacsb.edu/students"><img alt="AACSB Accredited" src="<?php echo $path_web_root; ?>/_resources/images/aacsb-large.png" width="120px" class="img-responsive" style="filter: alpha(opacity=30); opacity: 0.3"></a></div>
                   </div>
                </div>
