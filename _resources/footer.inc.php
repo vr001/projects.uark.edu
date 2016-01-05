@@ -18,7 +18,14 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 <h3><a href="http://walton.uark.edu" style='color:#5a5a5a;'>Sam M. Walton College of Business</a></h3>
 
 
-<p style="margin-bottom: 35px; padding: 20px;"><a href="//walton.uark.edu/directory/" class="btn navbar-btn btn-default" style="margin-top: -15px;">Walton Directory</a> <a href="https://intranet.waltoncollege.uark.edu:8001" class="btn navbar-btn btn-default" style="margin-top: -15px; margin-right: 10px;">Walton Intranet</a> <span style="display:inline-block;"><a style="color: #b7b7b7" title=”facebook” href="https://www.facebook.com/WaltonCollege"><i class="fa fa-3x fa-facebook-square"><!-- content --></i></a> <a style="color: #b7b7b7" title="twitter" href="https://twitter.com/uawaltoncollege"><i class="fa fa-3x fa-twitter-square"><!-- content --></i></a> <a style="color: #b7b7b7" title="Linkedin" href="https://www.linkedin.com/grp/home?gid=108950"><i class="fa fa-3x fa-fa fa-linkedin-square"><!-- content --></i></a> <a style="color: #b7b7b7" title="instagram" href="https://instagram.com/uawaltoncollege/"><i class="fa fa-3x fa-instagram"><!-- content --></i></a></span></p>
+<p style="margin-bottom: 35px; padding: 20px;">
+  <a href="//walton.uark.edu/directory/" class="btn navbar-btn btn-default" style="margin-top: -15px;">Walton Directory</a> 
+  <span style="display:inline-block;"><a style="color: #b7b7b7" title=”facebook” href="https://www.facebook.com/WaltonCollege"><i class="fa fa-3x fa-facebook-square"><!-- content --></i></a>
+    <a style="color: #b7b7b7" title="twitter" href="https://twitter.com/uawaltoncollege"><i class="fa fa-3x fa-twitter-square"><!-- content --></i></a>
+    <a style="color: #b7b7b7" title="Linkedin" href="https://www.linkedin.com/grp/home?gid=108950"><i class="fa fa-3x fa-fa fa-linkedin-square"><!-- content --></i></a>
+    <a style="color: #b7b7b7" title="instagram" href="https://instagram.com/uawaltoncollege/"><i class="fa fa-3x fa-instagram"><!-- content --></i></a>
+  </span>
+</p>
 </div>
                <div class="col-sm-5">
                   <div class="row">
