@@ -163,7 +163,6 @@ footer {
   color: #fff;
   font-weight: 300;
   display: block;
-  flex-grow: 1;
   min-height: 100%
 }
 
@@ -171,14 +170,14 @@ footer a, footer a:hover {
   color: white;
 }
 
-#footer-global-links {
+#footer-global-links, #social-stack {
   text-transform: uppercase;
   display: inline-block;
   list-style: none;
   margin: 0;
 }
 
-#footer-global-links li {
+#footer-global-links li, #social-stack li {
   float: left;
   margin-right: 2em;
 }

@@ -51,7 +51,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	  <li><a href="http://www.uark.edu/athletics/index.php">Athletics</a></li>
 	  <li><a href="http://www.uark.edu/about/index.php">About</a></li>
 	</ul>
-	<ul id="social-stack" class="nav pull-right clearfix list-unstyled">
+	<ul id="social-stack" class="nav clearfix list-unstyled">
 	    <li><a href="https://www.facebook.com/UofArkansas"><i class="fa fa-facebook"></i> <span class="sr-only">Like us on Facebook</span> </a></li>
 	    <li><a href="http://twitter.com/uarkansas"><i class="fa fa-twitter"></i> <span class="sr-only">Follow us on Twitter</span></a></li>
 	    <li><a href="http://www.youtube.com/user/UniversityArkansas"><i class="fa fa-youtube"></i> <span class="sr-only">Watch us on YouTube</span></a></li>
