@@ -51,7 +51,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
     
     <!-- UARK -->
     <link rel='stylesheet' href='$path_web_root/_resources/bootstrap/uark.css'></link>
-    
+
   ";?>
 
 </head>
