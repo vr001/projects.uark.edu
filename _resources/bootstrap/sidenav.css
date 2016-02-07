@@ -65,15 +65,19 @@
 }
 
 .sidebar-nav li a {
-    display: block;
+    /*display: block;*/
     text-decoration: none;
     color: #999999;
+}
+
+.sidebar-nav li:hover {
+    background: rgba(255,255,255,0.2);
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
     color: #fff;
-    background: rgba(255,255,255,0.2);
+    /*background: rgba(255,255,255,0.2);*/
 }
 
 .sidebar-nav li a:active,
@@ -97,8 +101,7 @@
     background: none;
 }
 
-/*
-@media(min-width:768px) {
+@media(min-width:1460px) {
     #wrapper {
         padding-left: 250px;
     }
@@ -125,4 +128,7 @@
         margin-right: 0;
     }
 }
-*/
+
+.navigation_menu_toggle {
+  margin-left: -20px;
+}

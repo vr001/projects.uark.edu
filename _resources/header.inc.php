@@ -77,17 +77,19 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	    echo "<a id='site_title_brand' class='navbar-brand' href='$path_web_root/'>$site_title</a>"; 
           ?>
 
-          <?php // #section_title_brand
-	    if(isset($section_title)) echo "<a id='section_title_brand' class='navbar-brand' href='./'>$section_title</a>";
-          ?>
-
         </div><!-- /.navbar-header -->
 
 	<div id="navbar" class="collapse navbar-collapse">
 
-	    <ul class="nav navbar-nav navigation-menu">
+	    <ul id='top_navigation_menu' class="nav navbar-nav navigation-menu">
 
 		<?php
+
+		/*
+		// get current section if not web root
+		if(dirname($_SERVER["SCRIPT_FILENAME"]) != $path_real_root){
+		    echo "<li><a class='li_section_title page_link' href='".dirname($_SERVER["SCRIPT_NAME"])."/'>$section_title</a></li>";
+		}
 
 		// recurse bottom-up the chain until first node with navigation menu
 		$path_relative_section = str_replace($path_web_root, '', dirname($_SERVER["SCRIPT_NAME"]));
@@ -103,6 +105,9 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		  $path_relative_section = dirname($path_relative_section);
 		  if($path_relative_section == "/") $path_relative_section = "";
 		} while (true);
+		*/
+
+		include("$path_real_root/_resources/navigation-menu.php");
 
 		?>
 
@@ -133,19 +138,42 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav navigation-menu">
-                <!-- removed redundant sidebar brand
-		  <li class="sidebar-brand">
-		      <a href="<?php echo $path_web_root;?>/"><?php echo $site_title; ?></a>
-		  </li>
-                -->
-                <?php include($path_real_root . '/_resources/navigation-menu.php'); ?>
+            <ul id='current_navigation_menu' class="sidebar-nav navigation-menu">
+                <?php include("$path_real_root/SiteMap/navigation-menu.inc.php"); ?>
             </ul>
             <script>
-	      $('.navigation-menu').find('a').each(function(){
+
+	      function toggle_nav_item(toggle){
+		toggle.find(".glyphicon").toggleClass("glyphicon-plus-sign glyphicon-minus-sign");
+		toggle.parent().children("ul").toggle("blind");
+	      }
+
+	      $("#top_navigation_menu").find("a").each(function(){
 		    if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
 		      $(this).parent().addClass("active");
 	      });
+	      /*
+	      $("#current_navigation_menu").find("a").each(function(){
+		    if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+		      $(this).parents("ul").show();
+	      });
+	      */
+	      // add active class only to page in sidebar
+	      var on_index_page = true;
+	      $("#current_navigation_menu").find('a').each(function(){
+		if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" ){
+		  on_index_page = false;
+		  //$(this).parents().find(".glyphicon").removeClass("glyphicon-plus-sign").addClass("glyphicon-minus-sign");
+		  //$(this).parents("ul").show();
+		  $(this).parent().addClass("active");
+		}
+	      });
+	      if (on_index_page) {
+		$("#current_navigation_menu").find('a').each(function(){
+		  if ( $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+		    $(this).parent().addClass("active");
+		});
+	      }
 	    </script>
         </div><!-- /#sidebar-wrapper -->
 
