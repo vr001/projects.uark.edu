@@ -1,19 +1,8 @@
-# WebSite
-blank template
+# projects.uark.edu
+This is a class project intended to be a prototype for a social networking utility suited for gathering community stakeholder input on proposed and in-progress projects.
 
-## Purpose
-This is built to take the tedium out of creating the following:  
-
-- apache virtual host configuration  
-- self-signed SSL certificate  
-- common php/html/css and site includes for use with MySQL  
-  - jquery-ui
-  - bootstrap
-  - font-awesome 4.5.0
-  - tablesorter
-  - chartist
-  - active directory login session via php LDAP
-- checkout new git branch and commit to private remote
+## upstream
+This project uses the uark stylesheet and is created from the template here https://github.com/jeff-puckett/WebSite
 
 ## Requirements
 Might work elsewhere, but designed and tested on:  
