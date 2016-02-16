@@ -78,6 +78,13 @@ body {
   }
 }
 
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  border-color: #af0001;
+  color: #aa0000;
+}
+
 .navbar {
     z-index: 9;
     background-color: #fff;
