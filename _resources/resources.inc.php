@@ -90,6 +90,8 @@ function sec_session_start() {
 
 }
 
+// start session
+sec_session_start();
 
 // MySQL
 if ( !empty($include_mysqli) ) {
