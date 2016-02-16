@@ -150,14 +150,15 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		  </li>
                 <?php include($path_real_root . '/_resources/navigation-menu.php'); ?>
             </ul>
-            <script>
-	      $('.navigation-menu').find('a').each(function(){
-		    if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
-		      $(this).parent().addClass("active");
-	      });
-	    </script>
+
         </div><!-- /#sidebar-wrapper -->
 
+	<script>
+	  $('.navigation-menu').find('a').each(function(){
+		if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+		  $(this).parent().addClass("active");
+	  });
+	</script>
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
