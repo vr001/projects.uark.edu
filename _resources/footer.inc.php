@@ -15,8 +15,8 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
          <div class="container">
             <div class="row" style="padding-top: 30px;">
                <div class="col-sm-7">
-<h3><a href="http://walton.uark.edu" style='color:#5a5a5a;'>Sam M. Walton College of Business</a></h3>
-
+<h3><a href="//information-systems.uark.edu/" style='color:#5a5a5a'>Department of Information Systems</a></h3>
+<h4><a href="//information-systems.uark.edu/graduate-program-masters-degree.php" style='color: #b3b3b3'>Graduate School of Business</a></h4>
 
 <p style="margin-bottom: 35px; padding: 20px;">
   <a href="//walton.uark.edu/directory/" class="btn navbar-btn btn-default" style="margin-top: -15px;">Walton Directory</a> 
