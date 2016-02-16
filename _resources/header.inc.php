@@ -163,7 +163,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
         <div id="page-content-wrapper">
 
 
-		<div id="page-content-container" class='container<?php if(!isset($no_well_container)) echo " well' style='background-color:white;"; ?>'>
+		<div id="page-content-container" class='<?php if(!isset($full_width_container)) echo "container "; ?><?php if(!isset($no_well_container)) echo " well' style='background-color:white;"; ?>'>
 		  
 <!-- BEGIN BODY CONTENT -->
 <?php
