@@ -95,6 +95,9 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 		<?php
 
+		require_once("$path_real_root/_resources/navigation-menu.php");
+
+		/*
 		// recurse bottom-up the chain until first node with navigation menu
 		$path_relative_section = str_replace($path_web_root, '', dirname($_SERVER["SCRIPT_NAME"]));
 		// TODO: create rendered relative path for menu links that can be copied from html source
@@ -109,12 +112,12 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		  $path_relative_section = dirname($path_relative_section);
 		  if($path_relative_section == "/") $path_relative_section = "";
 		} while (true);
+		*/
 
 		?>
 
 	    </ul>
 	    
-	    <!--
 	    <div id='login_nav_div' class="pull-right-md pull-left-xs">
 		<ul class="nav navbar-nav navigation-menu">
 		  <?php
@@ -128,7 +131,6 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	      
 		</ul>
 	   </div>
-	   -->
 
 	</div><!--/#navbar.nav-collapse -->
 
