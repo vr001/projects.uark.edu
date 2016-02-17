@@ -97,6 +97,13 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 </html>
 
 <?php
+if(!empty($footer_includes)){
+  foreach ($footer_includes as $footer_include)
+    include_once("$footer_include");
+}
+?>
+
+<?php
 } // END if exclude html
 
 if (!empty($mysqli_connected)) $mysqli_connection->close();

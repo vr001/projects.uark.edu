@@ -30,6 +30,12 @@
 		?>
 	
 	The credentials_local.inc.php files are useful for automatic merging patch updates.
+
+
+
+	Also, this is a good place for custom footer script includes like google analytics,
+	$footer_includes []= (__DIR__)."/google.analytics.js";
+	Remember, $path_real_root is not defined yet.
 */
 
 $site_title = "Web Site";
