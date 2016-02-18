@@ -50,6 +50,8 @@ $site_title = "Web Site";
   $database_password = "p@55W0rd";
   $database_name = "example_database";
 
+// login url
+$login_page = "/Login/";
   
 // global overrides
 $global_credentials_local = (__DIR__) . "/credentials_local.inc.php";
