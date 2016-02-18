@@ -74,7 +74,8 @@ body {
     border-color: #af0001;
   }
   .navbar {
-      margin-top: 80px;
+      margin-top: 50px;
+      margin-bottom: 10px;
   }
 }
 
@@ -94,7 +95,6 @@ body {
     border-radius: 0;
     min-height: 57px;
     max-height: 57px;
-    margin-bottom: 0;
 }
 
 #navbar {

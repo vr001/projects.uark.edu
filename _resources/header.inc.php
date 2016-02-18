@@ -63,7 +63,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
   <p id="site-heading" style="position: absolute; top: 85px; margin-left: 220px; font-size: 20px;"><span class="walton-sub-name"><a href="<?php echo "$path_web_root/";?>" style='color: #b3b3b3'>Stakeholder Engagement</a></span></p>
 </div><!-- /#opener banner -->
 
-    <nav class="navbar navbar-default" style='margin-top: 60px'>
+    <nav class="navbar navbar-default">
 
       <div class="container">
 
