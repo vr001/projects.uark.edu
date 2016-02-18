@@ -12,7 +12,7 @@ echo "<h1>$section_title</h1>";
 <p class='lead'>Make sure you have read <a href='rules.php'>the rules</a>.</p>
 
 <div id='page_controls' class='row'>
-	<div class='col-xs-6'><p><a id='show_list_of_threads' href='javascript:fetch_threads()' class='btn btn-primary'>Show/Hide Threads</a></p></div>
+	<div class='col-xs-6'><p><a id='show_list_of_threads' href='javascript:fetch_threads()' class='btn btn-primary'>Show Threads</a></p></div>
 	<div class='col-xs-6'><p><a href='javascript:void(0)' onclick='create_thread()' class='btn btn-success'>Create New Thread</a></p></div>
 </div><!-- /#page_controls.row -->
 
@@ -35,13 +35,15 @@ echo "<h1>$section_title</h1>";
 				success: function(result){
 					$("#list_of_threads_div").html(result);
 					apply_tablesorter();
-					$("#list_of_threads_div").show("blind");
-					$("#show_list_of_threads").text("Hide Threads").addClass("btn-warning").removeClass("btn-primary");
+					$("#list_of_threads_div").show("blind", function(){
+					  $("#show_list_of_threads").text("Hide Threads").addClass("btn-warning").removeClass("btn-primary");
+					});
 				}
 			});
 		} else {
-			$("#list_of_threads_div").hide("blind");
-			$("#show_list_of_threads").text("Show Threads").removeClass("btn-warning").addClass("btn-primary");
+			$("#list_of_threads_div").hide("blind", function(){
+			  $("#show_list_of_threads").text("Show Threads").removeClass("btn-warning").addClass("btn-primary");
+			});
 		}
 	}
 
