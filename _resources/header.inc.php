@@ -2,6 +2,8 @@
 
 require_once((__DIR__)."/resources.inc.php");
 
+sec_session_start();
+
 // if filename contains ".ajax." or ".bounce.", 
 //   or $exclude_html = true; 
 // then don't print html header
@@ -54,13 +56,28 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
   ";?>
 
+  <?php
+    if ( !empty($include_chartist) ) {
+      echo "
+	<!-- CHARTIST -->
+	<script src='$path_web_root/_resources/chartist/chartist.0.9.4.min.js'></script>
+	<script src='$path_web_root/_resources/chartist/chartist-plugin-tooltip.js'></script>
+	<script src='$path_web_root/_resources/chartist/chartist-plugin-axistitle.min.js'></script>
+	<script src='$path_web_root/_resources/chartist/chartist.custom.js'></script>
+	<link rel='stylesheet' href='$path_web_root/_resources/chartist/chartist.min.css'></link>
+	<link rel='stylesheet' href='$path_web_root/_resources/chartist/chartist.custom.css'></link>
+      ";
+    }
+  ?>
+
 </head>
 <body>
 <div id="header-bg"></div>
 <div class="container" id="opener" role="banner">
   <a class="brand" href="http://www.uark.edu/">University of Arkansas</a>
-  <h1 id="site-heading" style="position: absolute; top: 27px; margin-left: 220px;"><span class="walton-name"><a href="<?php echo "$path_web_root/";?>" style='color: #505050; font-weight: 700; font-size: 40px;'><?php echo $site_title;?></a></span></h1>
-  <p id="site-heading" style="position: absolute; top: 85px; margin-left: 220px; font-size: 20px;"><span class="walton-sub-name"><a href="//walton.uark.edu" style='color: #b3b3b3'>The Sam M. Walton College of Business</a></span></p>
+  <h1 id="site-heading" style="position: absolute; top: 27px; margin-left: 220px;"><span class="walton-name"><a href="<?php echo $path_web_root;?>"><?php echo $site_title;?></a></span></h1>
+  <h4>&nbsp;</h4>
+  <p id="site-heading" style="position: absolute; top: 85px; margin-left: 220px; font-size: 20px;"><span class="walton-sub-name"><a href="//walton.uark.edu">The Sam M. Walton College of Business</a></span></p>
 </div><!-- /#opener banner -->
 
     <nav class="navbar navbar-default">
@@ -87,7 +104,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	    echo "<a id='site_title_brand' class='navbar-brand' href='$path_web_root/'>$site_title</a>"; 
           ?>
 
-        </div><!-- /.navbar-header -->
+       </div><!-- /.navbar-header -->
 
 	<div id="navbar" class="collapse navbar-collapse">
 
@@ -117,6 +134,8 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	    <!--
 	    <div id='login_nav_div' class="pull-right-md pull-left-xs">
 		<ul class="nav navbar-nav navigation-menu">
+		
+		  <!--
 		  <?php
 		    if (isset($_SESSION["username"])) {
 		      echo "<li id='my_profile'><a href='$path_web_root/Profiles/?user_id=$_SESSION[user_id]'>$_SESSION[username]</a></li>";
@@ -125,6 +144,18 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		    else
 		      echo "<li id='login'><a href='$path_web_root/Login/'>Login</a></li>";
 		  ?>
+
+		  
+		  <?php if(!empty($_SESSION["participant_id"])){ ?>
+
+				  <li><a href="<?php echo $path_web_root;?>/?logout">Logout Participant <?php echo $_SESSION["participant_id"]; ?></a></li>
+		  <?php } ?>
+		  
+		  <?php if(isset($_SERVER["PHP_AUTH_USER"]) && $_SERVER["PHP_AUTH_USER"] == "marat"){ ?>
+			<li><a href="<?php echo $path_web_root;?>/admin/accounts.php">Accounts</a></li>
+			<li><a href="<?php echo $path_web_root;?>/admin/accounts.create.form.php">Create</a></li>
+			<li><a href='javascript:$.ajax({url:"<?php echo $path_web_root;?>/admin",username:"logout"}).done(window.location.replace("<?php echo $path_web_root;?>/"))'>LOGOUT MARAT</a></li>
+		  <?php } ?>
 	      
 		</ul>
 	   </div>
@@ -162,7 +193,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
         <div id="page-content-wrapper">
 
 
-		<div id="page-content-container" class='container<?php if(!isset($no_well_container)) echo " well' style='background-color:white;"; ?>'>
+		<div id="page-content-container" class='<?php if(!isset($full_width_container)) echo "container "; ?><?php if(!isset($no_well_container)) echo " well' style='background-color:white;"; ?>'>
 		  
 <!-- BEGIN BODY CONTENT -->
 <?php

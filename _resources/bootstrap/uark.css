@@ -74,8 +74,22 @@ body {
     border-color: #af0001;
   }
   .navbar {
-      margin-top: 80px;
+      margin-top: 12px;
   }
+}
+
+.walton-name a {
+  text-decoration: none;
+  color: #505050;
+  font-weight: 700;
+  font-size: 40px;
+}
+.walton-name a:hover, .walton-sub-name a:hover {
+  text-decoration: none;
+  color: #aa0000;
+}
+.walton-sub-name a {
+  color: #b3b3b3;
 }
 
 .navbar-default .navbar-nav > .active > a,
