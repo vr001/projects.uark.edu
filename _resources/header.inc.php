@@ -108,9 +108,15 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 	<div id="navbar" class="collapse navbar-collapse">
 
-	    <ul class="nav navbar-nav navigation-menu">
+	    <ul id='top_navigation_menu' class="nav navbar-nav navigation-menu">
 
 		<?php
+
+		/*
+		// get current section if not web root
+		if(dirname($_SERVER["SCRIPT_FILENAME"]) != $path_real_root){
+		    echo "<li><a class='li_section_title page_link' href='".dirname($_SERVER["SCRIPT_NAME"])."/'>$section_title</a></li>";
+		}
 
 		// recurse bottom-up the chain until first node with navigation menu
 		$path_relative_section = str_replace($path_web_root, '', dirname($_SERVER["SCRIPT_NAME"]));
@@ -126,40 +132,27 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		  $path_relative_section = dirname($path_relative_section);
 		  if($path_relative_section == "/") $path_relative_section = "";
 		} while (true);
+		*/
+
+		include("$path_real_root/_resources/navigation-menu.php");
 
 		?>
 
 	    </ul>
 	    
-	    <!--
 	    <div id='login_nav_div' class="pull-right-md pull-left-xs">
 		<ul class="nav navbar-nav navigation-menu">
-		
-		  <!--
 		  <?php
 		    if (isset($_SESSION["username"])) {
 		      echo "<li id='my_profile'><a href='$path_web_root/Profiles/?user_id=$_SESSION[user_id]'>$_SESSION[username]</a></li>";
 		      echo "<li id='logout'><a href='?logout'>Logout</a></li>";
 		    }
 		    else
-		      echo "<li id='login'><a href='$path_web_root/Login/'>Login</a></li>";
+		      echo "<li id='login'><a href='$login_page'>Login</a></li>";
 		  ?>
-
-		  
-		  <?php if(!empty($_SESSION["participant_id"])){ ?>
-
-				  <li><a href="<?php echo $path_web_root;?>/?logout">Logout Participant <?php echo $_SESSION["participant_id"]; ?></a></li>
-		  <?php } ?>
-		  
-		  <?php if(isset($_SERVER["PHP_AUTH_USER"]) && $_SERVER["PHP_AUTH_USER"] == "marat"){ ?>
-			<li><a href="<?php echo $path_web_root;?>/admin/accounts.php">Accounts</a></li>
-			<li><a href="<?php echo $path_web_root;?>/admin/accounts.create.form.php">Create</a></li>
-			<li><a href='javascript:$.ajax({url:"<?php echo $path_web_root;?>/admin",username:"logout"}).done(window.location.replace("<?php echo $path_web_root;?>/"))'>LOGOUT MARAT</a></li>
-		  <?php } ?>
 	      
 		</ul>
 	   </div>
-	   -->
 
 	</div><!--/#navbar.nav-collapse -->
 
@@ -172,22 +165,46 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
         <!-- Sidebar 
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav navigation-menu">
-                <!-- removed redundant sidebar brand
-		  <li class="sidebar-brand">
-		      <a href="<?php echo $path_web_root;?>/"><?php echo $site_title; ?></a>
-		  </li>
-                <?php include($path_real_root . '/_resources/navigation-menu.php'); ?>
+            <ul id='current_navigation_menu' class="sidebar-nav navigation-menu">
+                <?php include("$path_real_root/SiteMap/navigation-menu.inc.php"); ?>
             </ul>
+            <script>
 
-        </div><!-- /#sidebar-wrapper -->
+	      function toggle_nav_item(toggle){
+		toggle.find(".glyphicon").toggleClass("glyphicon-plus-sign glyphicon-minus-sign");
+		toggle.parent().children("ul").toggle("blind");
+	      }
 
-	<script>
-	  $('.navigation-menu').find('a').each(function(){
-		if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+	      /*
+	      $("#current_navigation_menu").find("a").each(function(){
+		    if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+		      $(this).parents("ul").show();
+	      });
+	      */
+	      // add active class only to page in sidebar
+	      var on_index_page = true;
+	      $("#current_navigation_menu").find('a').each(function(){
+		if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" ){
+		  on_index_page = false;
+		  //$(this).parents().find(".glyphicon").removeClass("glyphicon-plus-sign").addClass("glyphicon-minus-sign");
+		  //$(this).parents("ul").show();
 		  $(this).parent().addClass("active");
-	  });
-	</script>
+		}
+	      });
+	      if (on_index_page) {
+		$("#current_navigation_menu").find('a').each(function(){
+		  if ( $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+		    $(this).parent().addClass("active");
+		});
+	      }
+	    </script>
+        </div><!-- /#sidebar-wrapper -->
+<script>
+$("#top_navigation_menu").find("a").each(function(){
+      if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+	$(this).parent().addClass("active");
+});
+</script>
 
         <!-- Page Content -->
         <div id="page-content-wrapper">

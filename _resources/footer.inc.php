@@ -76,6 +76,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 
   <?php
+    $include_jquery_ui = true;
     if ( !empty($include_jquery_ui) ) {
       echo "
 	<!-- JQUERY-UI -->
@@ -151,6 +152,13 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 
 </html>
+
+<?php
+if(!empty($footer_includes)){
+  foreach ($footer_includes as $footer_include)
+    include_once("$footer_include");
+}
+?>
 
 <?php
 } // END if exclude html
