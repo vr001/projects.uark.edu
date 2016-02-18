@@ -126,7 +126,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		      echo "<li id='logout'><a href='?logout'>Logout</a></li>";
 		    }
 		    else
-		      echo "<li id='login'><a href='$path_web_root/Login/Database/'>Login</a></li>";
+		      echo "<li id='login'><a href='$login_page'>Login</a></li>";
 		  ?>
 	      
 		</ul>

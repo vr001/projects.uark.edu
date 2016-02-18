@@ -13,6 +13,8 @@ $path_web_root = str_replace($path_real_difference, '', $_SERVER['SCRIPT_NAME'])
 // variable definitions
 include_once((__DIR__) . '/credentials.inc.php');
 
+// login with full path
+$login_page = "$path_web_root$login_page";
 
 // custom functions
 function mysqlo_prepare_input($text){
