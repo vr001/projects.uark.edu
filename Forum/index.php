@@ -9,7 +9,6 @@ require_once('_resources/header.inc.php');
 echo "<h1>$section_title</h1>";
 
 ?>
-
 <p class='lead'>Make sure you have read <a href='rules.php'>the rules</a>.</p>
 
 <div id='page_controls' class='row'>
@@ -50,7 +49,8 @@ echo "<h1>$section_title</h1>";
 			var row = $(this);
 			var thread_id = row.find("message_data").attr("thread_id");
 			var thread_name = row.find("message_data").attr("thread_name");
-			fetch_messages(row,thread_id,thread_name,1);
+			fetch_messages(thread_id,thread_name,1);
+			row.addClass("bg-primary").siblings().removeClass("bg-primary");
 		}).hover( function() {
 			$(this).toggleClass("hover");
 		});
@@ -69,7 +69,7 @@ echo "<h1>$section_title</h1>";
 		$("#thread_name").val("").prop("disabled",true);
 	}
 
-	function fetch_messages(thread_row,thread_id,thread_name,page_number){
+	function fetch_messages(thread_id,thread_name,page_number){
 		$.ajax({url: "messages.ajax.php?thread_id=" + thread_id + "&page_number=" + page_number, success: function(result){
 			fetch_threads();
 			$("#thread_div").hide("blind",function(){
@@ -77,8 +77,8 @@ echo "<h1>$section_title</h1>";
 				$("#thread_messages_div").html(result);
 				$("#thread_div").show("blind", function(){$("#message_div").show("blind")});
 			});
-			thread_row.addClass("bg-primary").siblings().removeClass("bg-primary");
 			$("#message_thread_id").val(thread_id);
+			history.pushState({}, null, "<?php echo "$path_web_root" ?>/Forum/?thread_id="+thread_id);
 		},cache: false});
 	}
 
@@ -208,5 +208,15 @@ if (!isset($_SESSION["user_id"])) { ?>
 </div><!-- /#message_editor -->
 
 <?php } // END if (!isset($_SESSION["user_id"])) ?>
+
+<?php
+if ( !empty($_GET["thread_id"]) && is_numeric($_GET["thread_id"]) && $_GET["thread_id"] > 0 ) {?>
+<script>
+$(function(){
+  fetch_messages(<?php echo $_GET["thread_id"] ?>,"",1);
+});
+</script>
+<?php }
+?>
 
 <?php require_once('_resources/footer.inc.php');?>
