@@ -113,6 +113,7 @@ body {
 
 #navbar {
   border-color: transparent;
+  background-color: white;
 }
 
 .navbar li:hover, .navbar a {
