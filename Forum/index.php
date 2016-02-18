@@ -9,7 +9,6 @@ require_once('_resources/header.inc.php');
 echo "<h1>$section_title</h1>";
 
 ?>
-
 <p class='lead'>Make sure you have read <a href='rules.php'>the rules</a>.</p>
 
 <div id='page_controls' class='row'>
@@ -79,6 +78,7 @@ echo "<h1>$section_title</h1>";
 				$("#thread_div").show("blind", function(){$("#message_div").show("blind")});
 			});
 			$("#message_thread_id").val(thread_id);
+			history.pushState({}, null, "<?php echo "$path_web_root" ?>/Forum/?thread_id="+thread_id);
 		},cache: false});
 	}
 
@@ -208,5 +208,15 @@ if (!isset($_SESSION["user_id"])) { ?>
 </div><!-- /#message_editor -->
 
 <?php } // END if (!isset($_SESSION["user_id"])) ?>
+
+<?php
+if ( !empty($_GET["thread_id"]) && is_numeric($_GET["thread_id"]) && $_GET["thread_id"] > 0 ) {?>
+<script>
+$(function(){
+  fetch_messages(<?php echo $_GET["thread_id"] ?>,"",1);
+});
+</script>
+<?php }
+?>
 
 <?php require_once('_resources/footer.inc.php');?>
