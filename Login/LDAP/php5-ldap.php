@@ -44,7 +44,7 @@ echo "
 
   </div><!-- /#install_php5-ldap.well -->
 
-  <div id='login' class='well'>
+  <div id='print_ldap_attributes' class='well'>
   
 ";
 
@@ -104,7 +104,16 @@ if(isset($_POST['ldap_login_username']) && isset($_POST['ldap_login_password']))
     </form>
 <?php }
 
-echo "</div><!-- /#login.well -->";
+echo "</div><!-- /#print_ldap_attributes.well -->";
+
+?>
+
+<div class='well'>
+  <h3>Login to the Website</h3>
+  <p><a href='login.php' class='btn btn-success'>Login</a></p>
+</div>
+
+<?php
 
 // footer
 require_once('_resources/footer.inc.php');

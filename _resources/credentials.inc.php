@@ -52,7 +52,9 @@ $site_title = "Projects";
 
 // login url
 $login_page = "/Login/Database/";
-  
+
+$show_admin_nav_menu = false;
+
 // global overrides
 $global_credentials_local = (__DIR__) . "/credentials_local.inc.php";
 if (file_exists($global_credentials_local)) require_once($global_credentials_local);
