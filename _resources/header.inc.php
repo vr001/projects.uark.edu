@@ -2,6 +2,8 @@
 
 require_once((__DIR__)."/resources.inc.php");
 
+sec_session_start();
+
 // if filename contains ".ajax." or ".bounce.", 
 //   or $exclude_html = true; 
 // then don't print html header
@@ -54,13 +56,28 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
   ";?>
 
+  <?php
+    if ( !empty($include_chartist) ) {
+      echo "
+	<!-- CHARTIST -->
+	<script src='$path_web_root/_resources/chartist/chartist.0.9.4.min.js'></script>
+	<script src='$path_web_root/_resources/chartist/chartist-plugin-tooltip.js'></script>
+	<script src='$path_web_root/_resources/chartist/chartist-plugin-axistitle.min.js'></script>
+	<script src='$path_web_root/_resources/chartist/chartist.custom.js'></script>
+	<link rel='stylesheet' href='$path_web_root/_resources/chartist/chartist.min.css'></link>
+	<link rel='stylesheet' href='$path_web_root/_resources/chartist/chartist.custom.css'></link>
+      ";
+    }
+  ?>
+
 </head>
 <body>
 <div id="header-bg"></div>
 <div class="container" id="opener" role="banner">
   <a class="brand" href="http://www.uark.edu/">University of Arkansas</a>
-  <h1 id="site-heading" style="position: absolute; top: 27px; margin-left: 220px;"><span class="walton-name"><a href="<?php echo "$path_web_root/";?>" style='color: #505050; font-weight: 700; font-size: 40px;'><?php echo $site_title;?></a></span></h1>
-  <p id="site-heading" style="position: absolute; top: 85px; margin-left: 220px; font-size: 20px;"><span class="walton-sub-name"><a href="<?php echo "$path_web_root/";?>" style='color: #b3b3b3'>Stakeholder Engagement</a></span></p>
+  <h1 id="site-heading" style="position: absolute; top: 27px; margin-left: 220px;"><span class="walton-name"><a href="<?php echo $path_web_root;?>"><?php echo $site_title;?></a></span></h1>
+  <h4>&nbsp;</h4>
+  <p id="site-heading" style="position: absolute; top: 85px; margin-left: 220px; font-size: 20px;"><span class="walton-sub-name"><a href="//walton.uark.edu">The Sam M. Walton College of Business</a></span></p>
 </div><!-- /#opener banner -->
 
     <nav class="navbar navbar-default">
@@ -87,17 +104,22 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	    echo "<a id='site_title_brand' class='navbar-brand' href='$path_web_root/'>$site_title</a>"; 
           ?>
 
-        </div><!-- /.navbar-header -->
+       </div><!-- /.navbar-header -->
 
 	<div id="navbar" class="collapse navbar-collapse">
 
-	    <ul class="nav navbar-nav navigation-menu">
+	    <ul id='top_navigation_menu' class="nav navbar-nav navigation-menu">
 
 		<?php
 
 		require_once("$path_real_root/_resources/navigation-menu.php");
 
 		/*
+		// get current section if not web root
+		if(dirname($_SERVER["SCRIPT_FILENAME"]) != $path_real_root){
+		    echo "<li><a class='li_section_title page_link' href='".dirname($_SERVER["SCRIPT_NAME"])."/'>$section_title</a></li>";
+		}
+
 		// recurse bottom-up the chain until first node with navigation menu
 		$path_relative_section = str_replace($path_web_root, '', dirname($_SERVER["SCRIPT_NAME"]));
 		// TODO: create rendered relative path for menu links that can be copied from html source
@@ -147,22 +169,46 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
         <!-- Sidebar 
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav navigation-menu">
-                <!-- removed redundant sidebar brand
-		  <li class="sidebar-brand">
-		      <a href="<?php echo $path_web_root;?>/"><?php echo $site_title; ?></a>
-		  </li>
-                <?php include($path_real_root . '/_resources/navigation-menu.php'); ?>
+            <ul id='current_navigation_menu' class="sidebar-nav navigation-menu">
+                <?php include("$path_real_root/SiteMap/navigation-menu.inc.php"); ?>
             </ul>
+            <script>
 
-        </div><!-- /#sidebar-wrapper -->
+	      function toggle_nav_item(toggle){
+		toggle.find(".glyphicon").toggleClass("glyphicon-plus-sign glyphicon-minus-sign");
+		toggle.parent().children("ul").toggle("blind");
+	      }
 
-	<script>
-	  $('.navigation-menu').find('a').each(function(){
-		if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+	      /*
+	      $("#current_navigation_menu").find("a").each(function(){
+		    if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+		      $(this).parents("ul").show();
+	      });
+	      */
+	      // add active class only to page in sidebar
+	      var on_index_page = true;
+	      $("#current_navigation_menu").find('a').each(function(){
+		if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" ){
+		  on_index_page = false;
+		  //$(this).parents().find(".glyphicon").removeClass("glyphicon-plus-sign").addClass("glyphicon-minus-sign");
+		  //$(this).parents("ul").show();
 		  $(this).parent().addClass("active");
-	  });
-	</script>
+		}
+	      });
+	      if (on_index_page) {
+		$("#current_navigation_menu").find('a').each(function(){
+		  if ( $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+		    $(this).parent().addClass("active");
+		});
+	      }
+	    </script>
+        </div><!-- /#sidebar-wrapper -->
+<script>
+$("#top_navigation_menu").find("a").each(function(){
+      if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+	$(this).parent().addClass("active");
+});
+</script>
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
