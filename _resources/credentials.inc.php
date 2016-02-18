@@ -53,6 +53,8 @@ $site_title = "Web Site";
 // login url
 $login_page = "/Login/";
   
+$show_admin_nav_menu = true;
+
 // global overrides
 $global_credentials_local = (__DIR__) . "/credentials_local.inc.php";
 if (file_exists($global_credentials_local)) require_once($global_credentials_local);
