@@ -50,7 +50,8 @@ echo "<h1>$section_title</h1>";
 			var row = $(this);
 			var thread_id = row.find("message_data").attr("thread_id");
 			var thread_name = row.find("message_data").attr("thread_name");
-			fetch_messages(row,thread_id,thread_name,1);
+			fetch_messages(thread_id,thread_name,1);
+			row.addClass("bg-primary").siblings().removeClass("bg-primary");
 		}).hover( function() {
 			$(this).toggleClass("hover");
 		});
@@ -69,7 +70,7 @@ echo "<h1>$section_title</h1>";
 		$("#thread_name").val("").prop("disabled",true);
 	}
 
-	function fetch_messages(thread_row,thread_id,thread_name,page_number){
+	function fetch_messages(thread_id,thread_name,page_number){
 		$.ajax({url: "messages.ajax.php?thread_id=" + thread_id + "&page_number=" + page_number, success: function(result){
 			fetch_threads();
 			$("#thread_div").hide("blind",function(){
@@ -77,7 +78,6 @@ echo "<h1>$section_title</h1>";
 				$("#thread_messages_div").html(result);
 				$("#thread_div").show("blind", function(){$("#message_div").show("blind")});
 			});
-			thread_row.addClass("bg-primary").siblings().removeClass("bg-primary");
 			$("#message_thread_id").val(thread_id);
 		},cache: false});
 	}
