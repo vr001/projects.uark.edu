@@ -171,7 +171,7 @@ echo "<h1>$section_title</h1>";
 <?php
 if (!isset($_SESSION["user_id"])) { ?>
 
-	<p><a href='javascript:void(0)' class='btn btn-danger'>Not Logged In</a></p>
+	<p><a href='<?php echo $login_page ?>' class='btn btn-danger'>Not Logged In</a></p>
 
 <?php } else { ?>
 
