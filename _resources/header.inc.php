@@ -108,7 +108,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 	<div id="navbar" class="collapse navbar-collapse">
 
-	    <ul id='top_navigation_menu' class="nav navbar-nav navigation-menu">
+	    <ul id='top_navigation_menu' class='top_nav nav navbar-nav navigation-menu'>
 
 		<?php
 
@@ -140,7 +140,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 
 	    </ul>
 	    
-	    <div id='login_nav_div' class="pull-right-md pull-left-xs">
+	    <div id='login_nav_div' class='top_nav pull-right-md pull-left-xs'>
 		<ul class="nav navbar-nav navigation-menu">
 		  <?php
 		    if ( $show_admin_nav_menu || !empty($_SESSION["user_groups"]["ADMIN"]) )
@@ -204,10 +204,10 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 	    </script>
         </div><!-- /#sidebar-wrapper -->
 <script>
-$("#top_navigation_menu").find("a").each(function(){
-      if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
-	$(this).parent().addClass("active");
-});
+  $(".top_nav").find("a").each(function(){
+    if ( $(this).attr("href") == "<?php echo $_SERVER['SCRIPT_NAME'];?>" || $(this).attr("href") == "<?php echo dirname($_SERVER['SCRIPT_NAME'])."/";?>" )
+      $(this).parent().addClass("active");
+  });
 </script>
 
         <!-- Page Content -->
