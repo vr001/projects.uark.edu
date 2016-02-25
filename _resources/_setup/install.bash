@@ -195,7 +195,7 @@ if $createVhost ; then
   </VirtualHost>
   
   "
-  echo -e $vfile > VirtualHostConfigurationFile
+  echo -e "$vfile" > VirtualHostConfigurationFile
 fi
 
 # CREATE SSL CERTIFICATE
@@ -228,7 +228,7 @@ if $createSSL ; then
   </IfModule>
 	    
 	    "
-	    echo -e $vfile >> VirtualHostConfigurationFile
+	    echo -e "$vfile" >> VirtualHostConfigurationFile
 	    # ENABLE APACHE SSL MODULE
 	    sudo a2enmod ssl
 	fi
