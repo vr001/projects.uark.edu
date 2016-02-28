@@ -1,4 +1,4 @@
-CREATE TABLE USER
+CREATE TABLE Users
 (
   user_key INT PRIMARY KEY,
   email VARCHAR(30) NOT NULL,
@@ -8,31 +8,31 @@ CREATE TABLE USER
   user_creation_time TIMESTAMP NOT NULL
 );
 
-CREATE TABLE LINK_GROUP_USER
+CREATE TABLE Link_Groups_Users
 (
-  group_key INT ,
+  group_key INT,
   user_key INT,
   group_user_creation_time TIMESTAMP NOT NULL,
   PRIMARY KEY (group_key,user_key)
 );
 
-CREATE TABLE GROUPS
+CREATE TABLE Groups
 (
   group_key INT PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   createdby_user_key INT ,
   group_creation_time TIMESTAMP NOT NULL,
-  FOREIGN KEY (createdby_user_key)  REFERENCES USER(user_key)
+  FOREIGN KEY (createdby_user_key)  REFERENCES Users(user_key)
 );
 
-CREATE TABLE GROUP_ADMIN
+CREATE TABLE Groups_Admin
 (
   group_key INT,
   user_key INT,
   PRIMARY KEY (group_key,user_key)
 );
 
-CREATE TABLE content
+CREATE TABLE Content
 (
   content_key INT NOT NULL,
   parent_content_key INT,
@@ -46,11 +46,11 @@ CREATE TABLE content
   deletedby_user_key INT,
   deleted_time TIMESTAMP,
   PRIMARY KEY (content_key),
-  FOREIGN KEY (parent_content_key) REFERENCES content(content_key),
-  FOREIGN KEY (thread_key) REFERENCES content(content_key),
-  FOREIGN KEY (project_key) REFERENCES content(content_key),
-  FOREIGN KEY (group_key) REFERENCES groups(group_key),
-  FOREIGN KEY (createdby_user_key) REFERENCES user(user_key),
-  FOREIGN KEY (editedby_user_key) REFERENCES user(user_key),
-  FOREIGN KEY (deletedby_user_key) REFERENCES user(user_key)
+  FOREIGN KEY (parent_content_key) REFERENCES Content(content_key),
+  FOREIGN KEY (thread_key) REFERENCES Content(content_key),
+  FOREIGN KEY (project_key) REFERENCES Content(content_key),
+  FOREIGN KEY (group_key) REFERENCES Groups(group_key),
+  FOREIGN KEY (createdby_user_key) REFERENCES Users(user_key),
+  FOREIGN KEY (editedby_user_key) REFERENCES Users(user_key),
+  FOREIGN KEY (deletedby_user_key) REFERENCES Users(user_key)
 );
