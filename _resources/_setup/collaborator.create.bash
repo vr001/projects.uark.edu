@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# require root
+if ! [[ $EUID -eq 0 ]]; then
+  echo "ERROR: not root. Use \`sudo su\`"; exit 1
+fi
+
 #functions
 genpasswd() {
   local l=$1

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# require root
+if ! [[ $EUID -eq 0 ]]; then
+  echo "ERROR: not root. Use \`sudo su\`"; exit 1
+fi
+
 # get ldap username
 read -e -p "enter username: " new_collaborator
 if [[ -z "$new_collaborator" ]]; then
