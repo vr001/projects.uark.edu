@@ -1,56 +1,56 @@
-create table USER
+CREATE TABLE USER
 (
-  user_key int primary key,
-  email varchar(30) not  null,
-  user_name varchar(30) not null,
-  profile_picture varchar(200),
-  private_profile tinyint not null,
-  user_creation_time timestamp not null
+  user_key INT PRIMARY KEY,
+  email VARCHAR(30) NOT NULL,
+  user_name VARCHAR(30) NOT NULL,
+  profile_picture VARCHAR(200),
+  private_profile TINYINT NOT NULL,
+  user_creation_time TIMESTAMP NOT NULL
 );
 
-create table LINK_GROUP_USER
+CREATE TABLE LINK_GROUP_USER
 (
-  group_key int ,
-  user_key int,
-  group_user_creation_time timestamp not null,
-  primary key (group_key,user_key)
+  group_key INT ,
+  user_key INT,
+  group_user_creation_time TIMESTAMP NOT NULL,
+  PRIMARY KEY (group_key,user_key)
 );
 
-create table GROUPS
+CREATE TABLE GROUPS
 (
-  group_key int primary key,
-  name varchar(50) not null,
-  createdby_user_key int ,
-  group_creation_time timestamp not null,
-  foreign key (createdby_user_key)  references USER(user_key)
+  group_key INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  createdby_user_key INT ,
+  group_creation_time TIMESTAMP NOT NULL,
+  FOREIGN KEY (createdby_user_key)  REFERENCES USER(user_key)
 );
 
-create table GROUP_ADMIN
+CREATE TABLE GROUP_ADMIN
 (
-  group_key int,
-  user_key int,
-  primary key (group_key,user_key)
+  group_key INT,
+  user_key INT,
+  PRIMARY KEY (group_key,user_key)
 );
 
-create table content
+CREATE TABLE content
 (
-  content_key int not null,
-  parent_content_key int,
-  thread_key int,
-  project_key int,
-  group_key int,
-  createdby_user_key int not null,
-  creation_time timestamp not null,
-  editedby_user_key int not null,
-  edited_time timestamp not null,
-  deletedby_user_key int,
-  deleted_time timestamp,
-  primary key (content_key),
-  foreign key (parent_content_key) references content(content_key),
-  foreign key (thread_key) references content(content_key),
-  foreign key (project_key) references content(content_key),
-  foreign key (group_key) references groups(group_key),
-  foreign key (createdby_user_key) references user(user_key),
-  foreign key (editedby_user_key) references user(user_key),
-  foreign key (deletedby_user_key) references user(user_key)
+  content_key INT NOT NULL,
+  parent_content_key INT,
+  thread_key INT,
+  project_key INT,
+  group_key INT,
+  createdby_user_key INT NOT NULL,
+  creation_time TIMESTAMP NOT NULL,
+  editedby_user_key INT NOT NULL,
+  edited_time TIMESTAMP NOT NULL,
+  deletedby_user_key INT,
+  deleted_time TIMESTAMP,
+  PRIMARY KEY (content_key),
+  FOREIGN KEY (parent_content_key) REFERENCES content(content_key),
+  FOREIGN KEY (thread_key) REFERENCES content(content_key),
+  FOREIGN KEY (project_key) REFERENCES content(content_key),
+  FOREIGN KEY (group_key) REFERENCES groups(group_key),
+  FOREIGN KEY (createdby_user_key) REFERENCES user(user_key),
+  FOREIGN KEY (editedby_user_key) REFERENCES user(user_key),
+  FOREIGN KEY (deletedby_user_key) REFERENCES user(user_key)
 );
