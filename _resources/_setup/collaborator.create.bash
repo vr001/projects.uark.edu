@@ -90,7 +90,9 @@ mv projects.uark.edu/ $new_collaborator/
 chown -R $new_collaborator:$new_collaborator $new_collaborator/
 
 # copy error log alias to .bashrc
-echo 'alias elog="cat /var/log/httpd/test.projects.uark.edu.ssl-error_log"' >> /home/$new_collaborator/.bashrc
+vhost_log_file="/var/log/httpd/test.projects.uark.edu.ssl-error_log"
+chmod +rx "$vhost_log_file"
+echo "alias elog='cat \"$vhost_log_file\"'" >> /home/$new_collaborator/.bashrc
 
 # move to virtual host directory
 echo "alias www='cd /var/www/test/$new_collaborator'" >> /home/$new_collaborator/.bashrc
