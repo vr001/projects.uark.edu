@@ -170,7 +170,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
         <!-- Sidebar 
         <div id="sidebar-wrapper">
             <ul id='current_navigation_menu' class="sidebar-nav navigation-menu">
-                <?php include("$path_real_root/SiteMap/navigation-menu.inc.php"); ?>
+                <?php //include("$path_real_root/SiteMap/navigation-menu.inc.php"); ?>
             </ul>
             <script>
 
