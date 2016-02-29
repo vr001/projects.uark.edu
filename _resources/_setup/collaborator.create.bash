@@ -98,6 +98,6 @@ echo "alias elog='cat \"$vhost_log_file\"'" >> /home/$new_collaborator/.bashrc
 echo "alias www='cd /var/www/test/$new_collaborator'" >> /home/$new_collaborator/.bashrc
 
 # mysql shortcut
-echo "alias mysql='mysql --user=\"$new_collaborator\" --password=\"$database_password\" --database=\"$database_name\"'" >> /home/$new_collaborator/.bashrc
+echo "alias mysqlme='mysql --user=\"$new_collaborator\" --password=\"$database_password\" --database=\"$database_name\"'" >> /home/$new_collaborator/.bashrc
 
 chmod 600 /home/$new_collaborator/.bashrc
