@@ -4,7 +4,7 @@ include_fake_data=false
 
 # must be in proper order for drop/add with key relationships
 ddl_files=( \
-  "projects.ddl.sql"
+  "SQL/projects.ddl.sql"
 )
 fake_data_files=()
 
