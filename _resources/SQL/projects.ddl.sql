@@ -1,4 +1,4 @@
--- drop tables
+-- TABLES --
 DROP TABLE IF EXISTS Votes;
 DROP TABLE IF EXISTS Link_Groups_Content;
 DROP TABLE IF EXISTS Link_Groups_Users;
@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS Content;
 DROP TABLE IF EXISTS Groups;
 DROP TABLE IF EXISTS Users;
 
--- tables
 CREATE TABLE IF NOT EXISTS Users (
   user_key INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(30) NOT NULL,
@@ -27,26 +26,37 @@ CREATE TABLE IF NOT EXISTS Groups (
 CREATE TABLE IF NOT EXISTS Content (
   content_title VARCHAR(100), -- nullable for comments
   content_value VARCHAR(1000), -- nullable for threads
+
   content_key INT PRIMARY KEY AUTO_INCREMENT,
   project_key INT NOT NULL,
   FOREIGN KEY (project_key) REFERENCES Content(content_key),
   thread_key INT,
   FOREIGN KEY (thread_key) REFERENCES Content(content_key),
+
+  -- recursive reply-to hierarchy
   parent_content_key INT,
   FOREIGN KEY (parent_content_key) REFERENCES Content(content_key),
   has_children BOOLEAN DEFAULT FALSE,
+
+  -- audit revision history of edits
+  original_content_key INT,
+  FOREIGN KEY (original_content_key) REFERENCES Content(content_key),
+  has_edits BOOLEAN DEFAULT FALSE,
+
+  content_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   content_createdby_user_key INT NOT NULL,
   FOREIGN KEY (content_createdby_user_key) REFERENCES Users(user_key),
-  content_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  content_edited_time TIMESTAMP NULL,
   content_editedby_user_key INT,
   FOREIGN KEY (content_editedby_user_key) REFERENCES Users(user_key),
-  content_edited_time TIMESTAMP NULL,
+
+  content_deleted_time TIMESTAMP NULL,
   content_deletedby_user_key INT,
-  FOREIGN KEY (content_deletedby_user_key) REFERENCES Users(user_key),
-  content_deleted_time TIMESTAMP NULL
+  FOREIGN KEY (content_deletedby_user_key) REFERENCES Users(user_key)
 );
 
--- link tables
+-- linking tables
 CREATE TABLE IF NOT EXISTS Link_Groups_Users (
   group_key INT NOT NULL,
   FOREIGN KEY (group_key) REFERENCES Groups(group_key),
@@ -75,3 +85,90 @@ CREATE TABLE IF NOT EXISTS Votes (
   vote_creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_key,content_key)
 );
+
+-- STORED PROCEDURES --
+DELIMITER $$
+
+-- DROP PROCEDURE IF EXISTS create_project;
+-- DROP PROCEDURE IF EXISTS create_content;
+DROP PROCEDURE IF EXISTS edit_content;
+
+CREATE PROCEDURE edit_content (
+  IN p_user_key INT,
+  IN p_content_key INT,
+  IN p_content_title VARCHAR(100),
+  IN p_content_value VARCHAR(1000)
+)
+this_procedure:BEGIN
+
+  DECLARE valid_content_key INT DEFAULT NULL;
+  DECLARE p_project_key INT;
+  DECLARE p_thread_key INT;
+  DECLARE p_parent_content_key INT;
+  DECLARE p_original_content_key INT;
+  DECLARE p_has_children BOOLEAN;
+  DECLARE p_content_createdby_user_key INT;
+  DECLARE p_content_creation_time TIMESTAMP;
+
+  -- get old values
+  SELECT content_key,
+    project_key,
+    thread_key,
+    parent_content_key,
+    original_content_key,
+    has_children,
+    content_createdby_user_key,
+    content_creation_time
+  INTO valid_content_key,
+    p_project_key,
+    p_thread_key,
+    p_parent_content_key,
+    p_original_content_key,
+    p_has_children,
+    p_content_createdby_user_key,
+    p_content_creation_time
+  FROM Content
+  WHERE content_key = p_content_key;
+  
+  -- validate content exists
+  IF valid_content_key IS NULL THEN
+    SELECT 'content key does not exist' AS 'ERROR';
+    LEAVE this_procedure;
+  END IF;
+  
+  -- mark old content as edited
+  UPDATE Content
+  SET has_edits = TRUE
+  WHERE content_key = valid_content_key;
+  
+  -- insert new content
+  INSERT INTO Content (
+    content_title,
+    content_value,
+    project_key,
+    thread_key,
+    parent_content_key,
+    has_children,
+    original_content_key,
+    content_creation_time,
+    content_createdby_user_key,
+    content_edited_time,
+    content_editedby_user_key
+  )
+  VALUES (
+    p_content_title,
+    p_content_value,
+    p_project_key,
+    p_thread_key,
+    p_parent_content_key,
+    p_has_children,
+    p_original_content_key,
+    p_content_creation_time,
+    p_content_createdby_user_key,
+    CURRENT_TIMESTAMP,
+    p_user_key
+  );
+
+END $$
+
+DELIMITER ;
