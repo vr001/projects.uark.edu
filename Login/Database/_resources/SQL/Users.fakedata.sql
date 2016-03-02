@@ -33,12 +33,12 @@ INSERT INTO `User_Groups` (group_name,group_createdby_user_key) VALUES ('GIRLS',
 
 -- user-group links
 -- admin
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (4,1);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (4,1);
 -- guys
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (2,2);
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (4,2);
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (5,2);
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (7,2);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (2,2);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (4,2);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (5,2);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (7,2);
 -- girls
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (3,3);
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (6,3);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (3,3);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (6,3);

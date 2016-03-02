@@ -84,7 +84,7 @@ function login($email, $password, $mysqli) {
 		      SELECT group_name
 		      FROM `User_Groups` g
 		      INNER JOIN `User_Groups-link` l
-			ON g.group_id = l.group_id
+			ON g.group_key = l.group_key
 		      WHERE l.user_key = $user_key";
 		    $result_groups = $mysqli->query($query_groups);
 		    $array_groups = array();

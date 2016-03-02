@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `User_Login_Attempts` (
 
 
 CREATE TABLE IF NOT EXISTS `User_Groups` (
-  `group_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `group_key` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `group_creation_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `group_name` VARCHAR(30) NOT NULL UNIQUE,
   `group_createdby_user_key` INT NOT NULL,
@@ -38,9 +38,9 @@ INSERT INTO `User_Groups` (group_name,group_createdby_user_key) VALUES ('ADMIN',
 CREATE TABLE IF NOT EXISTS `User_Groups-link` (
   `user_key` INT NOT NULL,
   FOREIGN KEY (user_key) REFERENCES Users(user_key),
-  `group_id` INT NOT NULL,
-  FOREIGN KEY (group_id) REFERENCES User_Groups(group_id),
+  `group_key` INT NOT NULL,
+  FOREIGN KEY (group_key) REFERENCES User_Groups(group_key),
   `membership_creation_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY(user_key,group_id)
+  PRIMARY KEY(user_key,group_key)
 );
-INSERT INTO `User_Groups-link` (user_key,group_id) VALUES (1,1);
+INSERT INTO `User_Groups-link` (user_key,group_key) VALUES (1,1);
