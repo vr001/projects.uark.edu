@@ -1,62 +1,77 @@
-CREATE TABLE Users
-(
-  user_key INT PRIMARY KEY,
+-- drop tables
+DROP TABLE IF EXISTS Votes;
+DROP TABLE IF EXISTS Link_Groups_Content;
+DROP TABLE IF EXISTS Link_Groups_Users;
+DROP TABLE IF EXISTS Content;
+DROP TABLE IF EXISTS Groups;
+DROP TABLE IF EXISTS Users;
+
+-- tables
+CREATE TABLE IF NOT EXISTS Users (
+  user_key INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(30) NOT NULL,
   user_name VARCHAR(30) NOT NULL,
   profile_picture VARCHAR(200),
-  private_profile TINYINT NOT NULL,
-  user_creation_time TIMESTAMP NOT NULL
+  private_profile BOOLEAN DEFAULT FALSE,
+  user_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Groups
-(
-  group_key INT PRIMARY KEY,
-  name VARCHAR(50) NOT NULL,
-  createdby_user_key INT ,
-  group_creation_time TIMESTAMP NOT NULL,
-  FOREIGN KEY (createdby_user_key)  REFERENCES Users(user_key)
+CREATE TABLE IF NOT EXISTS Groups (
+  group_key INT PRIMARY KEY AUTO_INCREMENT,
+  group_name VARCHAR(50) NOT NULL,
+  group_createdby_user_key INT NOT NULL,
+  FOREIGN KEY (group_createdby_user_key) REFERENCES Users(user_key),
+  group_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Link_Groups_Users
-(
+CREATE TABLE IF NOT EXISTS Content (
+  content_title VARCHAR(100), -- nullable for comments
+  content_value VARCHAR(1000), -- nullable for threads
+  content_key INT PRIMARY KEY AUTO_INCREMENT,
+  project_key INT NOT NULL,
+  FOREIGN KEY (project_key) REFERENCES Content(content_key),
+  thread_key INT,
+  FOREIGN KEY (thread_key) REFERENCES Content(content_key),
+  parent_content_key INT,
+  FOREIGN KEY (parent_content_key) REFERENCES Content(content_key),
+  has_children BOOLEAN DEFAULT FALSE,
+  content_createdby_user_key INT NOT NULL,
+  FOREIGN KEY (content_createdby_user_key) REFERENCES Users(user_key),
+  content_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  content_editedby_user_key INT,
+  FOREIGN KEY (content_editedby_user_key) REFERENCES Users(user_key),
+  content_edited_time TIMESTAMP NULL,
+  content_deletedby_user_key INT,
+  FOREIGN KEY (content_deletedby_user_key) REFERENCES Users(user_key),
+  content_deleted_time TIMESTAMP NULL
+);
+
+-- link tables
+CREATE TABLE IF NOT EXISTS Link_Groups_Users (
   group_key INT NOT NULL,
-  user_key INT NOT NULL,
-  is_admin BOOLEAN,
-  group_user_creation_time TIMESTAMP NOT NULL,
-  FOREIGN KEY (user_key) REFERENCES Users(user_key),
   FOREIGN KEY (group_key) REFERENCES Groups(group_key),
+  user_key INT NOT NULL,
+  FOREIGN KEY (user_key) REFERENCES Users(user_key),
+  is_admin BOOLEAN DEFAULT FALSE,
+  group_user_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (group_key,user_key)
 );
 
-CREATE TABLE Content
-(
-  title VARCHAR(100),
-  content VARCHAR(1000),
-  content_key INT NOT NULL,
-  parent_content_key INT,
-  has_children BOOLEAN,
-  thread_key INT,
-  project_key INT,
-  group_key INT,
-  createdby_user_key INT NOT NULL,
-  creation_time TIMESTAMP NOT NULL,
-  editedby_user_key INT NOT NULL,
-  edited_time TIMESTAMP NOT NULL,
-  deletedby_user_key INT,
-  deleted_time TIMESTAMP,
-  PRIMARY KEY (content_key),
-  FOREIGN KEY (parent_content_key) REFERENCES Content(content_key),
-  FOREIGN KEY (thread_key) REFERENCES Content(content_key),
-  FOREIGN KEY (project_key) REFERENCES Content(content_key),
+CREATE TABLE IF NOT EXISTS Link_Groups_Content (
+  group_key INT NOT NULL,
   FOREIGN KEY (group_key) REFERENCES Groups(group_key),
-  FOREIGN KEY (createdby_user_key) REFERENCES Users(user_key),
-  FOREIGN KEY (editedby_user_key) REFERENCES Users(user_key),
-  FOREIGN KEY (deletedby_user_key) REFERENCES Users(user_key)
+  content_key INT NOT NULL,
+  FOREIGN KEY (content_key) REFERENCES Content(content_key),
+  PRIMARY KEY (group_key,content_key)
 );
 
-CREATE TABLE Vote
-(
+-- votes
+CREATE TABLE IF NOT EXISTS Votes (
   content_key INT NOT NULL,
+  FOREIGN KEY (content_key) REFERENCES Content(content_key),
   user_key INT NOT NULL,
-  vote BOOLEAN NOT NULL
+  FOREIGN KEY (user_key) REFERENCES Users(user_key),
+  vote_value BOOLEAN NOT NULL,
+  vote_creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_key,content_key)
 );
