@@ -93,7 +93,42 @@ DELIMITER $$
 
 -- DROP PROCEDURE IF EXISTS create_project;
 -- DROP PROCEDURE IF EXISTS create_content;
+
+DROP PROCEDURE IF EXISTS login_shib_user;
 DROP PROCEDURE IF EXISTS edit_content;
+
+CREATE PROCEDURE login_shib_user (
+  p_email VARCHAR(30),
+  p_username VARCHAR(30)
+)
+this_procedure:BEGIN
+
+  DECLARE existing_user_key INT DEFAULT NULL;
+
+  SELECT user_key
+  INTO existing_user_key
+  FROM Users
+  WHERE email = p_email;
+
+  IF existing_user_key IS NOT NULL THEN
+    SELECT existing_user_key AS 'user_key';
+    LEAVE this_procedure;
+  END IF;
+
+  -- create new user record
+  INSERT INTO Users (
+    email,
+    username
+  )
+  VALUES (
+    p_email,
+    p_username
+  );
+  
+  SELECT LAST_INSERT_ID() AS 'user_key';
+
+END $$
+
 
 CREATE PROCEDURE edit_content (
   IN p_user_key INT,
