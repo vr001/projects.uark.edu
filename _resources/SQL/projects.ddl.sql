@@ -8,14 +8,6 @@ CREATE TABLE Users
   user_creation_time TIMESTAMP NOT NULL
 );
 
-CREATE TABLE Link_Groups_Users
-(
-  group_key INT,
-  user_key INT,
-  group_user_creation_time TIMESTAMP NOT NULL,
-  PRIMARY KEY (group_key,user_key)
-);
-
 CREATE TABLE Groups
 (
   group_key INT PRIMARY KEY,
@@ -25,10 +17,14 @@ CREATE TABLE Groups
   FOREIGN KEY (createdby_user_key)  REFERENCES Users(user_key)
 );
 
-CREATE TABLE Groups_Admin
+CREATE TABLE Link_Groups_Users
 (
   group_key INT,
   user_key INT,
+  is_admin BOOLEAN,
+  group_user_creation_time TIMESTAMP NOT NULL,
+  FOREIGN KEY (user_key) REFERENCES Users(user_key),
+  FOREIGN KEY (group_key) REFERENCES Groups(group_key),
   PRIMARY KEY (group_key,user_key)
 );
 
@@ -36,6 +32,7 @@ CREATE TABLE Content
 (
   content_key INT NOT NULL,
   parent_content_key INT,
+  has_children BOOLEAN,
   thread_key INT,
   project_key INT,
   group_key INT,
