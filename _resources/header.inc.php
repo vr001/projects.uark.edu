@@ -148,7 +148,7 @@ if ( ! ((strpos(basename($_SERVER["SCRIPT_NAME"]),'.ajax.') !== false) || (strpo
 		  ?>
 		  <?php
 		    if (isset($_SESSION["username"])) {
-		      echo "<li id='my_profile'><a href='$path_web_root/Profiles/?user_id=$_SESSION[user_id]'>$_SESSION[username]</a></li>";
+		      echo "<li id='my_profile'><a href='$path_web_root/Profiles/?user_key=$_SESSION[user_key]'>$_SESSION[username]</a></li>";
 		      echo "<li id='logout'><a href='?logout'>Logout</a></li>";
 		    }
 		    else
