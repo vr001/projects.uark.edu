@@ -49,6 +49,7 @@ $site_title = "Projects";
   $database_username = "username";
   $database_password = "p@55W0rd";
   $database_name = "example_database";
+  $database_name = "projects_dev";
 
 // login url
 $login_page = "/Login/Database/";

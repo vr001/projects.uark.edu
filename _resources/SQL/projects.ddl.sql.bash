@@ -1,5 +1,10 @@
 #!/bin/bash
 
+database_server="localhost"
+database_user="username"
+database_password="p@55W0rd"
+database_name="projects_dev"
+
 include_fake_data=false
 
 # must be in proper order for drop/add with key relationships
