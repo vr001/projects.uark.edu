@@ -19,8 +19,8 @@ CREATE TABLE Groups
 
 CREATE TABLE Link_Groups_Users
 (
-  group_key INT,
-  user_key INT,
+  group_key INT NOT NULL,
+  user_key INT NOT NULL,
   is_admin BOOLEAN,
   group_user_creation_time TIMESTAMP NOT NULL,
   FOREIGN KEY (user_key) REFERENCES Users(user_key),
@@ -30,6 +30,8 @@ CREATE TABLE Link_Groups_Users
 
 CREATE TABLE Content
 (
+  title VARCHAR(100),
+  content VARCHAR(1000),
   content_key INT NOT NULL,
   parent_content_key INT,
   has_children BOOLEAN,
@@ -50,4 +52,11 @@ CREATE TABLE Content
   FOREIGN KEY (createdby_user_key) REFERENCES Users(user_key),
   FOREIGN KEY (editedby_user_key) REFERENCES Users(user_key),
   FOREIGN KEY (deletedby_user_key) REFERENCES Users(user_key)
+);
+
+CREATE TABLE Vote
+(
+  content_key INT NOT NULL,
+  user_key INT NOT NULL,
+  vote BOOLEAN NOT NULL
 );
