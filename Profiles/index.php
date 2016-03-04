@@ -12,7 +12,7 @@ if (empty($array_profile)) {
   $include_tablesorter = true;
 }
 
-require_once('_resources/header.inc.php');
+require_once("_resources/header.inc.php");
 
 $page_header = ( !empty($page_title) ? $page_title : $section_title );
 
@@ -69,4 +69,4 @@ else // print list of profiles
 
  ?>
 
-<?php require_once('_resources/footer.inc.php');?>
+<?php require_once("_resources/footer.inc.php");?>
