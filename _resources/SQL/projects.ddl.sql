@@ -104,14 +104,15 @@ CREATE PROCEDURE login_shib_user (
 this_procedure:BEGIN
 
   DECLARE existing_user_key INT DEFAULT NULL;
+  DECLARE db_username VARCHAR(30);
 
-  SELECT user_key
-  INTO existing_user_key
+  SELECT user_key, username
+  INTO existing_user_key, db_username
   FROM Users
   WHERE email = p_email;
 
   IF existing_user_key IS NOT NULL THEN
-    SELECT existing_user_key AS 'user_key';
+    SELECT existing_user_key AS 'user_key', db_username AS 'username';
     LEAVE this_procedure;
   END IF;
 
@@ -125,7 +126,7 @@ this_procedure:BEGIN
     p_username
   );
   
-  SELECT LAST_INSERT_ID() AS 'user_key';
+  SELECT LAST_INSERT_ID() AS 'user_key', p_username AS 'username';
 
 END $$
 

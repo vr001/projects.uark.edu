@@ -1,12 +1,11 @@
 <?php
-
 $exclude_html = true;
 $include_mysqli = true;
 require_once((__DIR__)."/_resources/header.inc.php");
 
-if (!empty($_SERVER["uid"]) && !empty($_SERVER["displayName"])) {
+if ($_SERVER["SERVER_NAME"] === "localhost" && !empty($_GET["uid"]) && !empty($_GET["displayName"])) {
 
-  $query = "CALL login_shib_user('$_SERVER[uid]','$_SERVER[displayName]');";
+  $query = "CALL login_shib_user('$_GET[uid]','$_GET[displayName]');";
   if ( ($result = $mysqli_connection->query($query))===false ) {
     printf("ERROR: Could not process login.", $mysqli_connection->error, $query);
   }
@@ -21,5 +20,4 @@ if (!empty($_SERVER["uid"]) && !empty($_SERVER["displayName"])) {
 } else echo "ERROR: \$_SERVER[uid] and \$_SERVER[displayName] are empty.";
 
 require_once((__DIR__)."/_resources/footer.inc.php");
-
 ?>
