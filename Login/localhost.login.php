@@ -13,11 +13,20 @@ if ($_SERVER["SERVER_NAME"] === "localhost" && !empty($_GET["uid"]) && !empty($_
     $row = $result->fetch_row();
     $_SESSION["user_key"] = $row[0];
     $_SESSION["username"] = $row[1];
+    $_SESSION["email"] = $row[2];
     $result->close();
     header("Location: $_SESSION[HTTP_REFERER]");
   }
 
-} else echo "ERROR: \$_SERVER[uid] and \$_SERVER[displayName] are empty.";
+} else echo "
+  <form>
+    email:<br/>
+    <input name='uid' type='text'/><br/>
+    username:<br/>
+    <input name='displayName' type='text'/><br/>
+    <input type='submit'/>
+  </form>
+";
 
 require_once((__DIR__)."/_resources/footer.inc.php");
 ?>

@@ -112,7 +112,9 @@ this_procedure:BEGIN
   WHERE email = p_email;
 
   IF existing_user_key IS NOT NULL THEN
-    SELECT existing_user_key AS 'user_key', db_username AS 'username';
+    SELECT existing_user_key AS 'user_key',
+      db_username AS 'username',
+      p_email AS 'email';
     LEAVE this_procedure;
   END IF;
 
@@ -126,7 +128,9 @@ this_procedure:BEGIN
     p_username
   );
   
-  SELECT LAST_INSERT_ID() AS 'user_key', p_username AS 'username';
+  SELECT LAST_INSERT_ID() AS 'user_key',
+    p_username AS 'username',
+    p_email AS 'email';
 
 END $$
 

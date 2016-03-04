@@ -14,6 +14,7 @@ if (!empty($_SERVER["uid"]) && !empty($_SERVER["displayName"])) {
     $row = $result->fetch_row();
     $_SESSION["user_key"] = $row[0];
     $_SESSION["username"] = $row[1];
+    $_SESSION["email"] = $row[2];
     $result->close();
     header("Location: $_SESSION[HTTP_REFERER]");
   }

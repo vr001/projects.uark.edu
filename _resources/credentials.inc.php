@@ -53,6 +53,8 @@ $site_title = "Projects";
 
 // login url will be preprended with $path_web_root
 $login_page = "/Login/shibboleth/";
+if($_SERVER["SERVER_NAME"] === "localhost")
+  $login_page = "/Login/localhost.login.php";
 
 $show_admin_nav_menu = false;
 
