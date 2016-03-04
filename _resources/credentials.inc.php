@@ -51,10 +51,12 @@ $site_title = "Projects";
   $database_name = "example_database";
   $database_name = "projects_dev";
 
-// login url
+// login url will be preprended with $path_web_root
 $login_page = "/Login/shibboleth/";
 
 $show_admin_nav_menu = false;
+
+$footer_includes []= (__DIR__)."/custom.js.php";
 
 // global overrides
 $global_credentials_local = (__DIR__) . "/credentials_local.inc.php";

@@ -2,7 +2,7 @@
 
 $exclude_html = true;
 $include_mysqli = true;
-include_once (__DIR__)."/_resources/header.inc.php";
+require_once((__DIR__)."/_resources/header.inc.php");
 
 if (!empty($_SERVER["uid"]) && !empty($_SERVER["displayName"])) {
 
@@ -15,9 +15,7 @@ if (!empty($_SERVER["uid"]) && !empty($_SERVER["displayName"])) {
     $_SESSION["user_key"] = $row[0];
     $_SESSION["username"] = $_SERVER["displayName"];
     $result->close();
-    $http_referer_array = explode("?", $_SERVER["HTTP_REFERER"]);
-    $http_referer_plain = $http_referer_array[0];
-    header("Location: $http_referer_plain");
+    header("Location: $_SESSION[HTTP_REFERER]");
   }
 
 } else echo "ERROR: \$_SERVER[uid] and \$_SERVER[displayName] are empty.";
