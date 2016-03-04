@@ -52,7 +52,7 @@ $site_title = "Projects";
   $database_name = "projects_dev";
 
 // login url
-$login_page = "/Login/Database/";
+$login_page = "/Login/shibboleth/";
 
 $show_admin_nav_menu = false;
 
