@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS Votes (
   FOREIGN KEY (content_key) REFERENCES Content(content_key),
   user_key INT NOT NULL,
   FOREIGN KEY (user_key) REFERENCES Users(user_key),
-  vote_value BOOLEAN NOT NULL,
+  vote_value TINYINT NOT NULL, -- downvote = -1, upvote = 1, inappropriate flag = -2
   vote_creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_key,content_key)
 );
