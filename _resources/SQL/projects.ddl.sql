@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS Users (
   user_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO Users (email,username) VALUES ('root@email','root');
-
 CREATE TABLE IF NOT EXISTS Groups (
   group_key INT PRIMARY KEY AUTO_INCREMENT,
   group_name VARCHAR(50) NOT NULL,
