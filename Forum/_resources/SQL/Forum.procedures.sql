@@ -80,8 +80,11 @@ BEGIN
 		message_editedby = p_user_key
 	WHERE	message_id = p_message_id;
 
-	SELECT * FROM Forum_Messages
-	WHERE message_id = p_message_id;
+	SELECT fm.*,u.username
+	FROM Forum_Messages fm
+	JOIN Users u
+	ON fm.message_author_user_key = u.user_key
+	  WHERE message_id = p_message_id;
 
 END $$
 
