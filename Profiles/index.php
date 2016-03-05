@@ -49,7 +49,58 @@ if ( !empty($user_key) && !empty($array_profile) ) {
 
     <label for='email'>Email:</label>
     <p id='email'>$array_profile[email]</p>
+";
 
+	$uID = $array_profile["email"];
+?>
+
+<div id='directory_callback_data'></div>
+
+<script type="text/javascript">
+
+var userid = "<?php echo $uID?>";
+var rendered_callback_content = "";
+
+$(function () {
+  $.ajax({
+    url: "http://campusdata.uark.edu/apiv2/people/?$filter=((Uid+eq+'" + userid + "'))",
+    data: {},
+    dataType: 'jsonp',
+    cache: 'true',
+    success: function (data) {
+      console.log(data);
+      recursiveIteration(data);
+      $("#directory_callback_data").append(rendered_callback_content);
+      //$(data).find().each(function(key, a){console.log(a);});
+      //console.table(data);
+      //console.log($(data));
+      /*$(data).children().each(function(key, val) {
+	console.log(val);
+      });*/
+    }
+  });
+});
+
+function recursiveIteration(object) {
+  rendered_callback_content += "<ul>";
+  for (var property in object) {
+    if (object.hasOwnProperty(property)) {
+      if (typeof object[property] == "object"){
+	rendered_callback_content += "<li>"+property;
+	recursiveIteration(object[property]);
+	rendered_callback_content += "</li>";
+      }else{
+	rendered_callback_content += "<li>"+property+" : " + object[property]+"</li>";
+      }
+    }
+  }
+  rendered_callback_content += "</ul>";
+}
+
+</script>
+
+<?php
+echo "
   </div>
   ";
 
@@ -61,6 +112,6 @@ else // print list of profiles
 
 }
 
- ?>
+?>
 
 <?php require_once("_resources/footer.inc.php");?>
