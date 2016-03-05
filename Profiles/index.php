@@ -21,44 +21,45 @@ echo "<h1>$page_header</h1>";
 // print body of individual profile
 if ( !empty($user_key) && !empty($array_profile) ) {
 
+  // BEGIN check if my profile
   if (isset($_SESSION["user_key"]) && $_SESSION["user_key"] === $user_key) { 
 
-    if ($array_profile["private_profile"] === "1") { $class = "danger"; $privacy = "Private"; }
-    else { $class = "success"; $privacy = "Public"; }
-    echo "<div id='privacy_div_wrapper' style='float:right'><div id='privacy_div' class='well'><p><a href='javascript:privatize_profile($array_profile[private_profile])' class='btn btn-$class'>$privacy</a></p></div></div>";
+    // privacy button
+    if ($array_profile["private_profile"] === "1")
+      { $class = "danger"; $privacy = "Private"; }
+    else
+      { $class = "success"; $privacy = "Public"; }
+    ?>
+    <div id='privacy_div_wrapper' style='float:right'>
+      <div id='privacy_div' class='well'>
+	<?php echo "
+	  <p><a href='javascript:privatize_profile($array_profile[private_profile])' class='btn btn-$class'>$privacy</a></p>
+	"; ?>
+      </div>
+    </div>
+    <?php
+  } // END check if my profile ?>
 
-  ?>
+<div class='well'>
+  <div id='directory_callback_data'></div>
+</div>
 
-  <script>
-    function privatize_profile(current_privacy_value){
-      if (current_privacy_value === 1) {
-	      new_privacy_value = "0";
-      } else  new_privacy_value = "1";
-      $.ajax({url: "privatize.ajax.php?user_key=<?php echo $_SESSION["user_key"];?>&privatize=" + new_privacy_value, 
-	success: function(result){
-	    $("#privacy_div").html(result);
-	}
-      });
-    }
-  </script>
+<?php
+}
+else // print list of profiles
+{
 
-  <?php }
+  require_once("profiles.inc.php");
 
-  echo "
-  <div class='well'>
+}
 
-    <label for='email'>Email:</label>
-    <p id='email'>$array_profile[email]</p>
-";
-
-	$uID = $array_profile["email"];
 ?>
 
-<div id='directory_callback_data'></div>
+<?php require_once("_resources/footer.inc.php");?>
 
-<script type="text/javascript">
+<script>
 
-var userid = "<?php echo $uID?>";
+var userid = "<?php echo $array_profile["email"]?>";
 var rendered_callback_content = "";
 
 $(function () {
@@ -97,21 +98,15 @@ function recursiveIteration(object) {
   rendered_callback_content += "</ul>";
 }
 
+function privatize_profile(current_privacy_value){
+  if (current_privacy_value === 1) {
+	  new_privacy_value = "0";
+  } else  new_privacy_value = "1";
+  $.ajax({url: "privatize.ajax.php?user_key=<?php if(!empty($_SESSION["user_key"])) echo $_SESSION["user_key"];?>&privatize=" + new_privacy_value, 
+    success: function(result){
+	$("#privacy_div").html(result);
+    }
+  });
+}
+
 </script>
-
-<?php
-echo "
-  </div>
-  ";
-
-}
-else // print list of profiles
-{
-
-  require_once("profiles.inc.php");
-
-}
-
-?>
-
-<?php require_once("_resources/footer.inc.php");?>
