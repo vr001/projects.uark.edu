@@ -59,17 +59,16 @@ else // print list of profiles
 
 <script>
 
-var userid = "<?php echo $array_profile["email"]?>";
 var rendered_callback_content = "";
 
 $(function () {
   $.ajax({
-    url: "http://campusdata.uark.edu/apiv2/people/?$filter=((Uid+eq+'" + userid + "'))",
+    url: "http://campusdata.uark.edu/apiv2/people/?$filter=((Uid+eq+'<?php echo $array_profile["email"]?>'))",
     dataType: 'jsonp',
     cache: 'true',
     success: function (data) {
       //recursiveIteration(data);
-      rendered_callback_content = "";
+      rendered_callback_content = "<table>";
       for (var key in data[0]) {
 	if(
 	  key === "Uid" ||
@@ -78,8 +77,13 @@ $(function () {
 	  key === "Classifications" ||
 	  data[0][key] === ""
 	) continue;
-	rendered_callback_content += "<label>"+key+"</label>: "+data[0][key]+"<br/>";
+	if(key === "Email")
+	  //rendered_callback_content += "<label for='"+key+"'>"+key+"</label>: <a href='mailto:"+data[0][key]+"'>"+data[0][key]+"</a><br/>";
+	  rendered_callback_content += "<tr><td class='directory_callback_keys'><label for='"+key+"' class='label label-default'>"+key+"</label></td><td><a href='mailto:"+data[0][key]+"'>"+data[0][key]+"</a></td></tr>";
+	else
+	  rendered_callback_content += "<tr><td class='directory_callback_keys'><label for='"+key+"' class='label label-default'>"+key+"</label></td><td>"+data[0][key]+"</td></tr>";
       }
+      rendered_callback_content += "</table>";
       $("#directory_callback_data").append(rendered_callback_content);
     }
   });
@@ -113,3 +117,11 @@ function privatize_profile(current_privacy_value){
 }
 
 </script>
+
+<style>
+.directory_callback_keys {
+  float:right;
+  margin-right:5px;
+  padding-top:4px;
+}
+</style>
