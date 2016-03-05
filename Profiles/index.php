@@ -65,25 +65,28 @@ var rendered_callback_content = "";
 $(function () {
   $.ajax({
     url: "http://campusdata.uark.edu/apiv2/people/?$filter=((Uid+eq+'" + userid + "'))",
-    data: {},
     dataType: 'jsonp',
     cache: 'true',
     success: function (data) {
-      console.log(data);
-      recursiveIteration(data);
+      //recursiveIteration(data);
+      rendered_callback_content = "";
+      for (var key in data[0]) {
+	if(
+	  key === "Uid" ||
+	  key === "DisplayName" ||
+	  key === "Enabled" ||
+	  key === "Classifications" ||
+	  data[0][key] === ""
+	) continue;
+	rendered_callback_content += "<label>"+key+"</label>: "+data[0][key]+"<br/>";
+      }
       $("#directory_callback_data").append(rendered_callback_content);
-      //$(data).find().each(function(key, a){console.log(a);});
-      //console.table(data);
-      //console.log($(data));
-      /*$(data).children().each(function(key, val) {
-	console.log(val);
-      });*/
     }
   });
 });
 
 function recursiveIteration(object) {
-  rendered_callback_content += "<ul>";
+  rendered_callback_content = "<ul>";
   for (var property in object) {
     if (object.hasOwnProperty(property)) {
       if (typeof object[property] == "object"){
