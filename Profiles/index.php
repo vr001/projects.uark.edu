@@ -14,12 +14,10 @@ if (empty($array_profile)) {
 
 require_once("_resources/header.inc.php");
 
-$page_header = ( !empty($page_title) ? $page_title : $section_title );
-
-echo "<h1>$page_header</h1>";
-
-// print body of individual profile
+// BEGIN if individual profile
 if ( !empty($user_key) && !empty($array_profile) ) {
+
+  echo "<h1>$array_profile[username]</h1>";
 
   // BEGIN check if my profile
   if (isset($_SESSION["user_key"]) && $_SESSION["user_key"] === $user_key) { 
@@ -45,7 +43,7 @@ if ( !empty($user_key) && !empty($array_profile) ) {
 </div>
 
 <?php
-}
+} // END if individual profile
 else // print list of profiles
 {
 

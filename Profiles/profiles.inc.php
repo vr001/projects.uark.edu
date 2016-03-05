@@ -16,6 +16,7 @@ if( !empty($mysqli_connected) ){
     else {
       // open table
       echo "
+	<h1>".$result_profiles->num_rows." Active Users</h1>
 	  <table border=1>
 		  <thead>
 			  <tr>
