@@ -13,7 +13,7 @@ echo "<h1>$section_title</h1>";
 
 <div id='page_controls' class='row'>
 	<div class='col-xs-6'><p><a id='show_list_of_threads' href='javascript:fetch_threads()' class='btn btn-primary'>Show Threads</a></p></div>
-	<?php if (isset($_SESSION["user_id"])) { ?>
+	<?php if (isset($_SESSION["user_key"])) { ?>
 	  <div class='col-xs-6'><p><a href='javascript:create_thread()' class='btn btn-success'>Create New Thread</a></p></div>
 	<?php } ?>
 </div><!-- /#page_controls.row -->
@@ -171,7 +171,7 @@ echo "<h1>$section_title</h1>";
 
 
 <?php
-if (!isset($_SESSION["user_id"])) { ?>
+if (!isset($_SESSION["user_key"])) { ?>
 
 	<p><a href='<?php echo $login_page ?>' class='btn btn-danger'>Not Logged In</a></p>
 
@@ -213,7 +213,7 @@ if (!isset($_SESSION["user_id"])) { ?>
   </form>
 </div><!-- /#message_editor -->
 
-<?php } // END if (!isset($_SESSION["user_id"])) ?>
+<?php } // END if (!isset($_SESSION["user_key"])) ?>
 
 <?php
 if ( !empty($_GET["thread_id"]) && is_numeric($_GET["thread_id"]) && $_GET["thread_id"] > 0 ) {?>
