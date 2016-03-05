@@ -61,7 +61,7 @@ var rendered_callback_content = "";
 
 $(function () {
   $.ajax({
-    url: "http://campusdata.uark.edu/apiv2/people/?$filter=((Uid+eq+'<?php echo $array_profile["email"]?>'))",
+    url: "https://campusdata.uark.edu/apiv2/people/?$filter=((Uid+eq+'<?php echo $array_profile["email"]?>'))",
     dataType: 'jsonp',
     cache: 'true',
     success: function (data) {
