@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Users (
 
 CREATE TABLE IF NOT EXISTS Groups (
   group_key INT PRIMARY KEY AUTO_INCREMENT,
-  group_name VARCHAR(50) NOT NULL,
+  group_name VARCHAR(100) NOT NULL,
   group_createdby_user_key INT NOT NULL,
   FOREIGN KEY (group_createdby_user_key) REFERENCES Users(user_key),
   group_creation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -89,104 +89,22 @@ CREATE TABLE IF NOT EXISTS Votes (
 -- STORED PROCEDURES --
 
 DROP PROCEDURE IF EXISTS login_shib_user;
-DROP PROCEDURE IF EXISTS edit_content;
-DROP PROCEDURE IF EXISTS fetch_projects;
 DROP FUNCTION IF EXISTS create_new_content_key;
-DROP PROCEDURE IF EXISTS create_project;
+DROP FUNCTION IF EXISTS create_project;
+DROP PROCEDURE IF EXISTS fetch_projects;
+-- DROP PROCEDURE IF EXISTS fetch_project;
+DROP FUNCTION IF EXISTS create_thread;
+-- DROP PROCEDURE IF EXISTS fetch_threads;
+-- DROP PROCEDURE IF EXISTS fetch_thread;
+DROP FUNCTION IF EXISTS create_comment;
+-- DROP PROCEDURE IF EXISTS fetch_comment;
+DROP PROCEDURE IF EXISTS edit_content;
+-- DROP PROCEDURE IF EXISTS delete_content;
 
 -- TODO:
 -- DROP PROCEDURE IF EXISTS create_content;
 
 DELIMITER $$
-
-CREATE FUNCTION create_new_content_key (p_content_createdby_user_key INT)
-RETURNS INT
-
-BEGIN
-
-  DECLARE new_content_key INT DEFAULT NULL;
-  INSERT INTO Content (content_createdby_user_key) VALUES (p_content_createdby_user_key);
-  SET new_content_key = LAST_INSERT_ID();
-  IF new_content_key IS NOT NULL THEN
-    UPDATE Content
-    SET original_content_key = new_content_key
-    WHERE content_key = new_content_key;
-  END IF;
-  RETURN new_content_key;
-
-END $$
-
-CREATE PROCEDURE create_project (
-  IN p_content_title VARCHAR(100),
-  IN p_content_value VARCHAR(1000),
-  IN p_content_createdby_user_key INT
-)
-this_procedure:BEGIN
-
-  DECLARE valid_content_createdby_user_key INT DEFAULT NULL;
-  DECLARE new_project_key INT DEFAULT NULL;
-  DECLARE new_group_key INT DEFAULT NULL;
-
-  -- validate inputs
-  IF p_content_title IS NULL THEN
-    SELECT 'p_content_title is null' AS 'ERROR';
-    LEAVE this_procedure;
-  END IF;
-
-  IF p_content_value IS NULL THEN
-    SELECT 'p_content_value is null' AS 'ERROR';
-    LEAVE this_procedure;
-  END IF;
-
-  SELECT user_key
-  INTO valid_content_createdby_user_key
-  FROM Users
-  WHERE user_key = p_content_createdby_user_key;
-  IF valid_content_createdby_user_key IS NULL THEN
-    SELECT 'invalid p_content_createdby_user_key' AS 'ERROR';
-    LEAVE this_procedure;
-  END IF;
-  
-  -- create new content
-  SET new_project_key = create_new_content_key(valid_content_createdby_user_key);
-  -- update with project key
-  UPDATE Content
-  SET project_key = new_project_key,
-      content_title = p_content_title,
-      content_value = p_content_value
-  WHERE content_key = new_project_key;
-  -- create group
-  INSERT INTO Groups (group_name,group_createdby_user_key)
-  VALUES (p_content_title,valid_content_createdby_user_key);
-  SET new_group_key = LAST_INSERT_ID();
-  -- create group-user link, set admin
-  INSERT INTO Link_Groups_Users (group_key,user_key,is_admin)
-  VALUES (new_group_key,valid_content_createdby_user_key,TRUE);
-  -- create group-content link
-  INSERT INTO Link_Groups_Content (group_key,content_key)
-  VALUES (new_group_key,new_project_key);
-
-  -- return new key
-  SELECT new_project_key AS 'content_key';
-
-END $$
-
-CREATE PROCEDURE fetch_projects ()
-this_procedure:BEGIN
-
-  SELECT content_title,
-    content_value,
-    original_content_key AS 'content_key',
-    content_creation_time,
-    content_createdby_user_key,
-    content_edited_time,
-    content_editedby_user_key
-  FROM `Content`
-  WHERE thread_key IS NULL
-    AND content_deleted_time IS NULL
-    AND has_edits = FALSE;
-
-END $$
 
 CREATE PROCEDURE login_shib_user (
   IN p_email VARCHAR(30),
@@ -222,6 +140,266 @@ this_procedure:BEGIN
   SELECT LAST_INSERT_ID() AS 'user_key',
     p_username AS 'username',
     p_email AS 'email';
+
+END $$
+
+
+CREATE FUNCTION create_new_content_key (p_content_createdby_user_key INT, p_parent_content_key INT)
+RETURNS INT
+
+BEGIN
+
+  DECLARE new_content_key INT DEFAULT NULL;
+  DECLARE valid_content_createdby_user_key INT DEFAULT NULL;
+  DECLARE valid_parent_content_key INT DEFAULT NULL;
+  DECLARE new_group_name VARCHAR(100) DEFAULT NULL;
+  DECLARE new_group_key INT DEFAULT NULL;
+  
+  SELECT user_key
+  INTO valid_content_createdby_user_key
+  FROM Users
+  WHERE user_key = p_content_createdby_user_key;
+  IF valid_content_createdby_user_key IS NULL THEN
+    RETURN -1;
+  END IF;
+  
+  IF p_parent_content_key IS NOT NULL THEN
+    SELECT original_content_key
+    INTO valid_parent_content_key
+    FROM Content
+    WHERE original_content_key = p_parent_content_key
+      AND has_edits = FALSE
+      AND content_deleted_time IS NULL;
+    IF valid_parent_content_key IS NULL THEN
+      RETURN -1;
+    END IF;
+  END IF;
+  
+  INSERT INTO Content (content_createdby_user_key) VALUES (p_content_createdby_user_key);
+  SET new_content_key = LAST_INSERT_ID();
+  IF new_content_key IS NOT NULL THEN
+    UPDATE Content
+    SET original_content_key = new_content_key,
+	parent_content_key = valid_parent_content_key
+    WHERE content_key = new_content_key;
+  END IF;
+  
+  -- create group
+  SET new_group_name = CONCAT('content_key_',new_content_key);
+  INSERT INTO Groups (group_name,group_createdby_user_key)
+  VALUES (new_group_name,valid_content_createdby_user_key);
+  SET new_group_key = LAST_INSERT_ID();
+  -- create group-user link, set admin
+  INSERT INTO Link_Groups_Users (group_key,user_key,is_admin)
+  VALUES (new_group_key,valid_content_createdby_user_key,TRUE);
+  -- create group-content link
+  INSERT INTO Link_Groups_Content (group_key,content_key)
+  VALUES (new_group_key,new_content_key);
+  
+  RETURN new_content_key;
+
+END $$
+
+
+CREATE FUNCTION create_project (
+  p_content_title VARCHAR(100),
+  p_content_value VARCHAR(1000),
+  p_content_createdby_user_key INT
+)
+RETURNS INT
+BEGIN
+
+  DECLARE valid_content_createdby_user_key INT DEFAULT NULL;
+  DECLARE new_project_key INT DEFAULT NULL;
+  DECLARE new_group_key INT DEFAULT NULL;
+
+  -- validate inputs
+  IF p_content_title IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  IF p_content_value IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  SELECT user_key
+  INTO valid_content_createdby_user_key
+  FROM Users
+  WHERE user_key = p_content_createdby_user_key;
+  IF valid_content_createdby_user_key IS NULL THEN
+    RETURN -1;
+  END IF;
+  
+  -- create new content
+  SET new_project_key = create_new_content_key(valid_content_createdby_user_key,NULL);
+  -- update with project key
+  UPDATE Content
+  SET project_key = new_project_key,
+      content_title = p_content_title,
+      content_value = p_content_value
+  WHERE content_key = new_project_key;
+
+  -- return new key
+  RETURN new_project_key;
+
+END $$
+
+
+CREATE PROCEDURE fetch_projects ()
+this_procedure:BEGIN
+
+  SELECT content_title,
+    content_value,
+    original_content_key AS 'content_key',
+    content_creation_time,
+    content_createdby_user_key,
+    content_edited_time,
+    content_editedby_user_key
+  FROM `Content`
+  WHERE thread_key IS NULL
+    AND content_deleted_time IS NULL
+    AND has_edits = FALSE;
+
+END $$
+
+
+CREATE FUNCTION create_thread (
+  p_project_key INT,
+  p_content_title VARCHAR(100),
+  p_content_value VARCHAR(1000),
+  p_content_createdby_user_key INT
+)
+RETURNS INT
+BEGIN
+
+  DECLARE valid_content_createdby_user_key INT DEFAULT NULL;
+  DECLARE valid_project_key INT DEFAULT NULL;
+  DECLARE new_thread_key INT DEFAULT NULL;
+  DECLARE new_comment_key INT DEFAULT NULL;
+
+  -- validate inputs
+  IF p_content_title IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  IF p_content_value IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  SELECT user_key
+  INTO valid_content_createdby_user_key
+  FROM Users
+  WHERE user_key = p_content_createdby_user_key;
+  IF valid_content_createdby_user_key IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  SELECT project_key
+  INTO valid_project_key
+  FROM Content
+  WHERE original_content_key = p_project_key
+    AND project_key = p_project_key
+    AND has_edits = FALSE
+    AND content_deleted_time IS NULL;
+  IF valid_project_key IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  -- create new thread
+  SET new_thread_key = create_new_content_key(valid_content_createdby_user_key,valid_project_key);
+  -- update with project key
+  UPDATE Content
+  SET thread_key = new_thread_key,
+      project_key = valid_project_key,
+      content_title = p_content_title
+  WHERE content_key = new_thread_key;
+  
+  -- create new comment
+  SET new_comment_key = create_comment(p_content_value,valid_project_key,new_thread_key,NULL,valid_content_createdby_user_key);
+
+  -- return new key
+  RETURN new_thread_key;
+
+END $$
+
+
+CREATE FUNCTION create_comment (
+  p_content_value VARCHAR(1000),
+  p_project_key INT,
+  p_thread_key INT,
+  p_parent_content_key INT,
+  p_content_createdby_user_key INT
+)
+RETURNS INT
+this_procedure:BEGIN
+
+  DECLARE valid_content_createdby_user_key INT DEFAULT NULL;
+  DECLARE valid_project_key INT DEFAULT NULL;
+  DECLARE valid_thread_key INT DEFAULT NULL;
+  DECLARE valid_parent_content_key INT DEFAULT NULL;
+  DECLARE new_comment_key INT DEFAULT NULL;
+
+  -- validate inputs
+  IF p_content_value IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  SELECT user_key
+  INTO valid_content_createdby_user_key
+  FROM Users
+  WHERE user_key = p_content_createdby_user_key;
+  IF valid_content_createdby_user_key IS NULL THEN
+    RETURN -1;
+  END IF;
+  
+  SELECT project_key
+  INTO valid_project_key
+  FROM Content
+  WHERE original_content_key = p_project_key
+    AND project_key = p_project_key
+    AND has_edits = FALSE
+    AND content_deleted_time IS NULL;
+  IF valid_project_key IS NULL THEN
+    RETURN -1;
+  END IF;
+
+  SELECT thread_key
+  INTO valid_thread_key
+  FROM Content
+  WHERE original_content_key = p_thread_key
+    AND thread_key = p_thread_key
+    AND has_edits = FALSE
+    AND content_deleted_time IS NULL;
+  IF valid_thread_key IS NULL THEN
+    RETURN -1;
+  END IF;
+  
+  IF p_parent_content_key IS NOT NULL THEN
+    SELECT original_content_key
+    INTO valid_parent_content_key
+    FROM Content
+    WHERE original_content_key = p_parent_content_key
+      AND project_key = p_project_key
+      AND has_edits = FALSE
+      AND content_deleted_time IS NULL;
+    IF valid_project_key IS NULL THEN
+      RETURN -1;
+    END IF;
+  ELSE
+    SET valid_parent_content_key = valid_thread_key;
+  END IF;
+  
+  -- create new content
+  SET new_comment_key = create_new_content_key(valid_content_createdby_user_key,valid_parent_content_key);
+  -- update with key values, and content value
+  UPDATE Content
+  SET project_key = valid_project_key,
+      thread_key = valid_thread_key,
+      content_value = p_content_value
+  WHERE content_key = new_comment_key;
+
+  -- return new key
+  RETURN new_comment_key;
 
 END $$
 
