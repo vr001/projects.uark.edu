@@ -9,7 +9,6 @@ include_fake_data=true
 
 # must be in proper order for drop/add with key relationships
 ddl_files=( \
-  "Forum/_resources/SQL/Forum.drop.sql"\
   "_resources/SQL/projects.ddl.sql"\
   "_resources/SQL/projects.seed.sql"
 )

@@ -94,6 +94,24 @@ DELIMITER $$
 
 DROP PROCEDURE IF EXISTS login_shib_user;
 DROP PROCEDURE IF EXISTS edit_content;
+DROP PROCEDURE IF EXISTS fetch_projects;
+
+CREATE PROCEDURE fetch_projects ()
+this_procedure:BEGIN
+
+  SELECT content_title,
+    content_value,
+    content_key,
+    content_creation_time,
+    content_createdby_user_key,
+    content_edited_time,
+    content_editedby_user_key
+  FROM `Content`
+  WHERE project_key IS NULL
+    AND content_deleted_time IS NULL
+    AND has_edits = FALSE;
+
+END $$
 
 CREATE PROCEDURE login_shib_user (
   p_email VARCHAR(30),
