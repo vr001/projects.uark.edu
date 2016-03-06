@@ -87,14 +87,89 @@ CREATE TABLE IF NOT EXISTS Votes (
 );
 
 -- STORED PROCEDURES --
-DELIMITER $$
-
--- DROP PROCEDURE IF EXISTS create_project;
--- DROP PROCEDURE IF EXISTS create_content;
 
 DROP PROCEDURE IF EXISTS login_shib_user;
 DROP PROCEDURE IF EXISTS edit_content;
 DROP PROCEDURE IF EXISTS fetch_projects;
+DROP FUNCTION IF EXISTS create_new_content_key;
+DROP PROCEDURE IF EXISTS create_project;
+
+-- TODO:
+-- DROP PROCEDURE IF EXISTS create_content;
+
+DELIMITER $$
+
+CREATE FUNCTION create_new_content_key (p_content_createdby_user_key INT)
+RETURNS INT
+
+BEGIN
+
+  DECLARE new_content_key INT DEFAULT NULL;
+  INSERT INTO Content (content_createdby_user_key) VALUES (p_content_createdby_user_key);
+  SET new_content_key = LAST_INSERT_ID();
+  IF new_content_key IS NOT NULL THEN
+    UPDATE Content
+    SET original_content_key = new_content_key
+    WHERE content_key = new_content_key;
+  END IF;
+  RETURN new_content_key;
+
+END $$
+
+CREATE PROCEDURE create_project (
+  IN p_content_title VARCHAR(100),
+  IN p_content_value VARCHAR(1000),
+  IN p_content_createdby_user_key INT
+)
+this_procedure:BEGIN
+
+  DECLARE valid_content_createdby_user_key INT DEFAULT NULL;
+  DECLARE new_project_key INT DEFAULT NULL;
+  DECLARE new_group_key INT DEFAULT NULL;
+
+  -- validate inputs
+  IF p_content_title IS NULL THEN
+    SELECT 'p_content_title is null' AS 'ERROR';
+    LEAVE this_procedure;
+  END IF;
+
+  IF p_content_value IS NULL THEN
+    SELECT 'p_content_value is null' AS 'ERROR';
+    LEAVE this_procedure;
+  END IF;
+
+  SELECT user_key
+  INTO valid_content_createdby_user_key
+  FROM Users
+  WHERE user_key = p_content_createdby_user_key;
+  IF valid_content_createdby_user_key IS NULL THEN
+    SELECT 'invalid p_content_createdby_user_key' AS 'ERROR';
+    LEAVE this_procedure;
+  END IF;
+  
+  -- create new content
+  SET new_project_key = create_new_content_key(valid_content_createdby_user_key);
+  -- update with project key
+  UPDATE Content
+  SET project_key = new_project_key,
+      content_title = p_content_title,
+      content_value = p_content_value
+  WHERE content_key = new_project_key;
+  -- create group
+  INSERT INTO Groups (group_name,group_createdby_user_key)
+  VALUES (p_content_title,valid_content_createdby_user_key);
+  SET new_group_key = LAST_INSERT_ID();
+  -- create group-user link, set admin
+  INSERT INTO Link_Groups_Users (group_key,user_key,is_admin)
+  VALUES (new_group_key,valid_content_createdby_user_key,TRUE);
+  -- create group-content link
+  INSERT INTO Link_Groups_Content (group_key,content_key)
+  VALUES (new_group_key,new_project_key);
+
+  -- return new key
+  SELECT new_project_key AS 'content_key';
+
+END $$
 
 CREATE PROCEDURE fetch_projects ()
 this_procedure:BEGIN
@@ -114,8 +189,8 @@ this_procedure:BEGIN
 END $$
 
 CREATE PROCEDURE login_shib_user (
-  p_email VARCHAR(30),
-  p_username VARCHAR(30)
+  IN p_email VARCHAR(30),
+  IN p_username VARCHAR(30)
 )
 this_procedure:BEGIN
 
