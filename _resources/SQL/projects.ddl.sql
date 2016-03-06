@@ -176,13 +176,13 @@ this_procedure:BEGIN
 
   SELECT content_title,
     content_value,
-    content_key,
+    original_content_key AS 'content_key',
     content_creation_time,
     content_createdby_user_key,
     content_edited_time,
     content_editedby_user_key
   FROM `Content`
-  WHERE project_key IS NULL
+  WHERE thread_key IS NULL
     AND content_deleted_time IS NULL
     AND has_edits = FALSE;
 
