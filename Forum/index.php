@@ -85,7 +85,7 @@ echo "<h1>$section_title</h1>";
 			});
 			$("#message_thread_id").val(thread_id);
 			history.pushState({}, null, "<?php echo "$path_web_root" ?>/Forum/?thread_id="+thread_id);
-			ga('send', 'pageview');
+			ga('send', 'pageview', "<?php echo "$path_web_root" ?>/Forum/?thread_id="+thread_id);
 		},cache: false});
 	}
 
