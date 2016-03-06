@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Content (
   content_value VARCHAR(1000), -- nullable for threads
 
   content_key INT PRIMARY KEY AUTO_INCREMENT,
-  project_key INT NOT NULL,
+  project_key INT,
   FOREIGN KEY (project_key) REFERENCES Content(content_key),
   thread_key INT,
   FOREIGN KEY (thread_key) REFERENCES Content(content_key),
