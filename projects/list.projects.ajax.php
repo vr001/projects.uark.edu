@@ -25,7 +25,7 @@ if( !empty($mysqli_connected) ){
     while ($row = $result->fetch_assoc())
 	echo "
 			<tr>
-				<td><content_data content_key='$row[content_key]' content_title='$row[content_title]'></content_data>$row[content_title]</td>
+				<td><content_data content_key='$row[project_key]' content_title='$row[content_title]'></content_data>$row[content_title]</td>
 				<td>$row[content_value]</td>
 				<td>$row[content_creation_time]</td>
 				<td>$row[content_createdby_user_key]</td>
