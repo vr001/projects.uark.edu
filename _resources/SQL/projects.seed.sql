@@ -4,7 +4,6 @@ INSERT INTO Users (email,username) VALUES ('vr001','Vignesh Ravichandran');
 INSERT INTO Users (email,username) VALUES ('gw004','Greg Williams');
 INSERT INTO Users (email,username) VALUES ('naliu','Luna');
 INSERT INTO Users (email,username) VALUES ('dbruce','David Bruce');
-Insert INTO Users (
-INSERT INTO Users (email,username) VALUES ('dbruce','David Bruce');
-INSERT INTO Users (email,username) VALUES ('dbruce','David Bruce');
-INSERT INTO Users (email,username) VALUES ('dbruce','David Bruce');
+INSERT INTO Users (email,username) VALUES ('schabba','Sukhmani Chabba');
+INSERT INTO Users (email,username) VALUES ('dkhan','Danish Khan');
+
